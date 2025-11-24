@@ -54,7 +54,7 @@
         }
         body:hover .cursor-outline { width: 50px; height: 50px; opacity: 0.5; }
 
-        /* --- MENU LATERAL ELEGANTE --- */
+        /* --- MENU LATERAL ELEGANTE (APENAS DESKTOP) --- */
         .side-nav {
             position: fixed;
             left: 0;
@@ -144,6 +144,183 @@
             height: 100%;
             width: 3px;
             background: var(--col-accent);
+        }
+
+        /* --- MENU MOBILE (BARRA INFERIOR E MENU EXPANSIVO) --- */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1001;
+        }
+
+        .mobile-nav-bar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--col-text);
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+            color: var(--col-accent);
+        }
+
+        .mobile-nav-item.active {
+            background: rgba(232, 203, 200, 0.15);
+            color: var(--col-dark);
+        }
+
+        .mobile-menu-btn {
+            position: relative;
+            z-index: 1002;
+        }
+
+        .mobile-menu-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--col-dark);
+            color: var(--col-bg);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+        }
+
+        .mobile-menu-toggle i {
+            font-size: 1.5rem;
+            color: var(--col-accent);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active i {
+            transform: rotate(45deg);
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-content {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s var(--ease-fluid);
+        }
+
+        .mobile-menu-content.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-menu-header h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--col-dark);
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--col-text);
+            cursor: pointer;
+        }
+
+        .mobile-menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--col-text);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .mobile-menu-item i {
+            font-size: 1.2rem;
+            margin-right: 15px;
+            color: var(--col-accent);
+            width: 24px;
+            text-align: center;
+        }
+
+        .mobile-menu-item span {
+            font-weight: 500;
+        }
+
+        .mobile-menu-item:hover, .mobile-menu-item.active {
+            background: rgba(232, 203, 200, 0.15);
+            color: var(--col-dark);
+            border-color: rgba(212, 175, 143, 0.3);
+            transform: translateX(5px);
         }
 
         /* --- TIPOGRAFIA GERAL --- */
@@ -563,6 +740,27 @@
 
         /* --- AJUSTES RESPONSIVOS --- */
         @media (max-width: 900px) {
+            /* Esconde o menu lateral no mobile */
+            .side-nav {
+                display: none;
+            }
+            
+            /* Mostra a navegação mobile */
+            .mobile-nav {
+                display: block;
+            }
+            
+            /* Ajusta as margens para compensar a remoção do menu lateral */
+            .hero-content, .services, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
+                margin-left: 0;
+                padding-bottom: 80px; /* Compensa a barra inferior */
+            }
+            
+            .hero-content {
+                margin-left: 0;
+                padding: 0 5%;
+            }
+            
             .treatment-row {
                 flex-direction: column !important; /* Sempre coluna no mobile */
                 gap: 40px;
@@ -575,27 +773,11 @@
             }
             .t-content h3 { font-size: 2rem; }
             
-            .side-nav {
-                width: 60px;
-            }
-            
-            .side-nav:hover {
-                width: 60px;
-            }
-            
-            .nav-logo, .nav-item span {
-                display: none;
-            }
-            
-            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
-                margin-left: 60px;
-            }
-            
             .hero h1 { font-size: 3rem; }
             .experience { flex-direction: column; }
             .blob-img { height: 300px; }
             .contact { flex-direction: column; }
-            .whatsapp-float { bottom: 20px; right: 20px; padding: 12px 20px; }
+            .whatsapp-float { bottom: 90px; right: 20px; padding: 12px 20px; }
             .ba-grid { grid-template-columns: 1fr; }
             
             .footer-content {
@@ -611,8 +793,8 @@
         @media (max-width: 428px) {
             .hero h1 { font-size: 2.5rem; }
             .section-title { font-size: 2.2rem; }
-            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
-                margin-left: 60px;
+            .hero-content, .services, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
+                margin-left: 0;
                 padding-left: 5%;
                 padding-right: 5%;
             }
@@ -625,6 +807,25 @@
             .t-img { height: 250px; }
             .ba-container { height: 300px; }
             .blob-img { height: 250px; }
+            
+            /* Ajustes específicos para telas muito pequenas */
+            .mobile-nav-bar {
+                padding: 8px 0;
+            }
+            
+            .mobile-nav-item {
+                font-size: 0.65rem;
+                padding: 5px 8px;
+            }
+            
+            .mobile-nav-item i {
+                font-size: 1rem;
+            }
+            
+            .mobile-menu-toggle {
+                width: 55px;
+                height: 55px;
+            }
         }
         
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -635,7 +836,7 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Menu Lateral Elegante -->
+    <!-- Menu Lateral Elegante (APENAS DESKTOP) -->
     <nav class="side-nav">
         <div class="nav-logo">Aura</div>
         <div class="nav-menu">
@@ -655,6 +856,76 @@
                 <i class="fas fa-calendar-alt"></i>
                 <span>Agendar</span>
             </a>
+        </div>
+    </nav>
+
+    <!-- Menu Mobile (APENAS MOBILE) -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-bar">
+            <a href="#home" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="#services" class="mobile-nav-item">
+                <i class="fas fa-spa"></i>
+                <span>Tratamentos</span>
+            </a>
+            <div class="mobile-menu-btn">
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            <a href="#experience" class="mobile-nav-item">
+                <i class="fas fa-clinic-medical"></i>
+                <span>A Clínica</span>
+            </a>
+            <a href="#contact" class="mobile-nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendar</span>
+            </a>
+        </div>
+        
+        <!-- Overlay do menu -->
+        <div class="mobile-menu-overlay"></div>
+        
+        <!-- Conteúdo do menu expansivo -->
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-items">
+                <a href="#home" class="mobile-menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Início</span>
+                </a>
+                <a href="#services" class="mobile-menu-item">
+                    <i class="fas fa-spa"></i>
+                    <span>Tratamentos</span>
+                </a>
+                <a href="#experience" class="mobile-menu-item">
+                    <i class="fas fa-clinic-medical"></i>
+                    <span>A Clínica</span>
+                </a>
+                <a href="#before-after" class="mobile-menu-item">
+                    <i class="fas fa-images"></i>
+                    <span>Resultados</span>
+                </a>
+                <a href="#team" class="mobile-menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Especialistas</span>
+                </a>
+                <a href="#testimonials" class="mobile-menu-item">
+                    <i class="fas fa-quote-left"></i>
+                    <span>Depoimentos</span>
+                </a>
+                <a href="#contact" class="mobile-menu-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendar</span>
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -949,6 +1220,69 @@
             if (experienceSection) {
                 experienceSection.style.transform = `translateY(${rate}px)`;
             }
+        });
+
+        // --- MENU MOBILE ---
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const mobileMenuContent = document.querySelector('.mobile-menu-content');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+
+        // Abrir menu mobile
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            mobileMenuContent.classList.toggle('active');
+        });
+
+        // Fechar menu mobile
+        function closeMobileMenu() {
+            mobileMenuToggle.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            mobileMenuContent.classList.remove('active');
+        }
+
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+        // Navegação mobile
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Atualizar item ativo
+                mobileMenuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Fechar menu
+                closeMobileMenu();
+                
+                // Atualizar item ativo na barra inferior
+                const targetId = item.getAttribute('href');
+                mobileNavItems.forEach(navItem => {
+                    if (navItem.getAttribute('href') === targetId) {
+                        mobileNavItems.forEach(i => i.classList.remove('active'));
+                        navItem.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Navegação na barra inferior
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', () => {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Atualizar item ativo no menu expansivo
+                const targetId = item.getAttribute('href');
+                mobileMenuItems.forEach(menuItem => {
+                    if (menuItem.getAttribute('href') === targetId) {
+                        mobileMenuItems.forEach(i => i.classList.remove('active'));
+                        menuItem.classList.add('active');
+                    }
+                });
+            });
         });
 
     </script>
