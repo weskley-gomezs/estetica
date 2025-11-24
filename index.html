@@ -14,12 +14,12 @@
     <style>
         /* --- VARIÁVEIS E RESET --- */
         :root {
-            --col-bg: #FDFBF7; /* Off-white cremoso */
-            --col-primary: #D4B8B1; /* Rosa chá sofisticado */
-            --col-secondary: #EAE0D5; /* Nude */
-            --col-accent: #CFB56A; /* Dourado suave */
-            --col-text: #4A4A4A; /* Cinza escuro */
-            --col-dark: #1a1a1a;
+            --col-bg: #FDF9F5; /* Off-white mais suave */
+            --col-primary: #E8CBC8; /* Rosa pêssego suave */
+            --col-secondary: #F5EDE6; /* Bege claro */
+            --col-accent: #D4AF8F; /* Dourado rosado */
+            --col-text: #5A5A5A; /* Cinza mais suave */
+            --col-dark: #2D2D2D; /* Preto suavizado */
             
             --font-title: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
@@ -54,6 +54,98 @@
         }
         body:hover .cursor-outline { width: 50px; height: 50px; opacity: 0.5; }
 
+        /* --- MENU LATERAL ELEGANTE --- */
+        .side-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            transition: width 0.3s ease;
+            overflow: hidden;
+        }
+
+        .side-nav:hover {
+            width: 220px;
+        }
+
+        .nav-logo {
+            margin-bottom: 40px;
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--col-dark);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .side-nav:hover .nav-logo {
+            opacity: 1;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: var(--col-text);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-right: 15px;
+            min-width: 20px;
+            color: var(--col-accent);
+        }
+
+        .nav-item span {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .side-nav:hover .nav-item span {
+            opacity: 1;
+        }
+
+        .nav-item:hover {
+            background: rgba(232, 203, 200, 0.1);
+            color: var(--col-dark);
+        }
+
+        .nav-item.active {
+            background: rgba(232, 203, 200, 0.15);
+            color: var(--col-dark);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--col-accent);
+        }
+
         /* --- TIPOGRAFIA GERAL --- */
         h1, h2, h3 { font-family: var(--font-title); font-weight: 400; letter-spacing: -0.02em; }
         .section-title {
@@ -74,67 +166,6 @@
             background: var(--col-accent);
             margin: 10px auto 0;
         }
-
-        /* --- NAVEGAÇÃO ORBITAL --- */
-        .nav-container {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-toggle {
-            width: 70px;
-            height: 70px;
-            background: var(--col-dark);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            z-index: 2;
-        }
-        
-        .menu-toggle:hover { transform: scale(1.1); }
-        .menu-toggle i { font-size: 1.5rem; transition: transform 0.4s; }
-        .nav-container.active .menu-toggle i { transform: rotate(135deg); }
-
-        .nav-items {
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .nav-item {
-            position: absolute;
-            background: #fff;
-            padding: 10px 20px;
-            border-radius: 30px;
-            white-space: nowrap;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.5s var(--ease-fluid);
-            color: var(--col-dark);
-            text-decoration: none;
-            font-family: var(--font-title);
-            font-size: 1.1rem;
-            font-weight: 600;
-            pointer-events: auto;
-            right: 0; bottom: 0;
-        }
-
-        .nav-item:hover { background: var(--col-primary); color: #fff; }
-
-        .nav-container.active .nav-item:nth-child(1) { bottom: 90px; right: 0; opacity: 1; transform: scale(1); transition-delay: 0.1s; }
-        .nav-container.active .nav-item:nth-child(2) { bottom: 70px; right: 70px; opacity: 1; transform: scale(1); transition-delay: 0.2s; }
-        .nav-container.active .nav-item:nth-child(3) { bottom: 0px; right: 90px; opacity: 1; transform: scale(1); transition-delay: 0.3s; }
-        .nav-container.active .nav-item:nth-child(4) { bottom: 130px; right: 40px; opacity: 1; transform: scale(1); transition-delay: 0.15s; }
 
         /* --- HERO SECTION --- */
         .hero {
@@ -157,7 +188,7 @@
         .hero-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, rgba(253,251,247,0.9) 30%, rgba(253,251,247,0.1) 100%);
+            background: linear-gradient(90deg, rgba(253,249,245,0.9) 30%, rgba(253,249,245,0.1) 100%);
             z-index: -1;
         }
 
@@ -166,6 +197,7 @@
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 1s ease forwards 0.5s;
+            margin-left: 80px; /* Compensa o menu lateral */
         }
 
         .hero h1 { font-size: 5rem; line-height: 1; color: var(--col-dark); margin-bottom: 1rem; }
@@ -189,7 +221,7 @@
         .btn-primary:hover { background: transparent; color: var(--col-dark); }
 
         /* --- SERVIÇOS --- */
-        .services { padding: 100px 10%; background: #fff; }
+        .services { padding: 100px 10%; background: #fff; margin-left: 80px; }
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -210,7 +242,7 @@
             content: '';
             position: absolute;
             top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(212,184,177,0.2) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(232,203,200,0.2) 0%, rgba(255,255,255,0) 70%);
             transform: scale(0); transition: transform 0.6s ease;
         }
         .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
@@ -225,7 +257,8 @@
             display: flex;
             align-items: center;
             gap: 50px;
-            background: linear-gradient(135deg, #FDFBF7 0%, #F7F2EC 100%);
+            background: linear-gradient(135deg, #FDF9F5 0%, #F7F2EC 100%);
+            margin-left: 80px;
         }
         .exp-text { flex: 1; }
         .exp-image { flex: 1; position: relative; }
@@ -242,7 +275,7 @@
         }
 
         /* --- ANTES E DEPOIS (EXPANDIDO) --- */
-        .before-after { padding: 100px 10%; text-align: center; }
+        .before-after { padding: 100px 10%; text-align: center; margin-left: 80px; }
         
         .ba-grid {
             display: grid;
@@ -299,7 +332,7 @@
         .badge-after { right: 20px; }
 
         /* --- EQUIPE (EXPANDIDA) --- */
-        .team { padding: 100px 10%; background: #fff; }
+        .team { padding: 100px 10%; background: #fff; margin-left: 80px; }
         .team-grid {
             display: flex;
             justify-content: center;
@@ -326,7 +359,7 @@
         .team-bio span { color: var(--col-accent); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; font-weight: 600;}
 
         /* --- DEPOIMENTOS --- */
-        .testimonials { padding: 100px 10%; background: var(--col-secondary); }
+        .testimonials { padding: 100px 10%; background: var(--col-secondary); margin-left: 80px; }
         .testimonial-card {
             background: #fff;
             padding: 40px;
@@ -345,6 +378,7 @@
             flex-wrap: wrap;
             gap: 50px;
             background: #fff;
+            margin-left: 80px;
         }
         .contact-form { flex: 1; min-width: 300px; }
         .contact-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -358,7 +392,7 @@
         input:focus, textarea:focus { border-bottom-color: var(--col-accent); }
 
         .whatsapp-float {
-            position: fixed; bottom: 40px; left: 40px;
+            position: fixed; bottom: 40px; right: 40px;
             background: #25D366; color: white; padding: 15px 25px;
             border-radius: 50px; text-decoration: none; font-weight: bold;
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
@@ -370,102 +404,116 @@
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @media (max-width: 768px) {
+        /* --- TRATAMENTOS DETALHADOS (NOVO) --- */
+        .detailed-treatments {
+            padding: 100px 10%;
+            background: #fff;
+            overflow: hidden;
+            margin-left: 80px;
+        }
+
+        .treatment-row {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            margin-bottom: 120px;
+            position: relative;
+        }
+
+        /* Inverte a ordem a cada 2 itens para criar o efeito Zig-Zag */
+        .treatment-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        /* Imagens com formas orgânicas */
+        .t-image-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .t-img {
+            width: 100%;
+            max-width: 550px;
+            height: 450px;
+            object-fit: cover;
+            /* Forma orgânica inicial */
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.05);
+            transition: all 0.6s ease;
+        }
+
+        /* Efeito Hover na imagem */
+        .treatment-row:hover .t-img {
+            border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; /* Vira círculo ou oval */
+            transform: scale(1.02);
+        }
+
+        .t-content {
+            flex: 1;
+        }
+
+        .t-content h3 {
+            font-size: 2.5rem;
+            color: var(--col-dark);
+            margin-bottom: 20px;
+        }
+
+        .t-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--col-text);
+        }
+
+        .t-price {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            color: var(--col-accent);
+            font-style: italic;
+        }
+
+        /* Ajustes Mobile */
+        @media (max-width: 900px) {
+            .treatment-row {
+                flex-direction: column !important; /* Sempre coluna no mobile */
+                gap: 40px;
+                margin-bottom: 80px;
+                text-align: center;
+            }
+            .t-img {
+                height: 350px;
+                width: 100%;
+            }
+            .t-content h3 { font-size: 2rem; }
+            
+            .side-nav {
+                width: 60px;
+            }
+            
+            .side-nav:hover {
+                width: 60px;
+            }
+            
+            .nav-logo, .nav-item span {
+                display: none;
+            }
+            
+            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments {
+                margin-left: 60px;
+            }
+            
             .hero h1 { font-size: 3rem; }
             .experience { flex-direction: column; }
             .blob-img { height: 300px; }
             .contact { flex-direction: column; }
-            .nav-container { bottom: 20px; right: 20px; }
-            .whatsapp-float { bottom: 20px; left: 20px; padding: 12px 20px; }
+            .whatsapp-float { bottom: 20px; right: 20px; padding: 12px 20px; }
             .ba-grid { grid-template-columns: 1fr; }
         }
         
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        /* --- TRATAMENTOS DETALHADOS (NOVO) --- */
-.detailed-treatments {
-    padding: 100px 10%;
-    background: #fff;
-    overflow: hidden;
-}
-
-.treatment-row {
-    display: flex;
-    align-items: center;
-    gap: 80px;
-    margin-bottom: 120px;
-    position: relative;
-}
-
-/* Inverte a ordem a cada 2 itens para criar o efeito Zig-Zag */
-.treatment-row:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-/* Imagens com formas orgânicas */
-.t-image-box {
-    flex: 1;
-    position: relative;
-}
-
-.t-img {
-    width: 100%;
-    max-width: 550px;
-    height: 450px;
-    object-fit: cover;
-    /* Forma orgânica inicial */
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    box-shadow: 15px 15px 40px rgba(0,0,0,0.05);
-    transition: all 0.6s ease;
-}
-
-/* Efeito Hover na imagem */
-.treatment-row:hover .t-img {
-    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; /* Vira círculo ou oval */
-    transform: scale(1.02);
-}
-
-.t-content {
-    flex: 1;
-}
-
-.t-content h3 {
-    font-size: 2.5rem;
-    color: var(--col-dark);
-    margin-bottom: 20px;
-}
-
-.t-content p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 15px;
-    color: var(--col-text);
-}
-
-.t-price {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    font-family: var(--font-title);
-    font-size: 1.3rem;
-    color: var(--col-accent);
-    font-style: italic;
-}
-
-/* Ajustes Mobile */
-@media (max-width: 900px) {
-    .treatment-row {
-        flex-direction: column !important; /* Sempre coluna no mobile */
-        gap: 40px;
-        margin-bottom: 80px;
-        text-align: center;
-    }
-    .t-img {
-        height: 350px;
-        width: 100%;
-    }
-    .t-content h3 { font-size: 2rem; }
-}
-
     </style>
 </head>
 <body>
@@ -473,15 +521,26 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <nav class="nav-container" id="navContainer">
-        <div class="nav-items">
-            <a href="#home" class="nav-item">Início</a>
-            <a href="#services" class="nav-item">Tratamentos</a>
-            <a href="#experience" class="nav-item">A Clínica</a>
-            <a href="#contact" class="nav-item">Agendar</a>
-        </div>
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <i class="fas fa-plus"></i>
+    <!-- Menu Lateral Elegante -->
+    <nav class="side-nav">
+        <div class="nav-logo">Aura</div>
+        <div class="nav-menu">
+            <a href="#home" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="#services" class="nav-item">
+                <i class="fas fa-spa"></i>
+                <span>Tratamentos</span>
+            </a>
+            <a href="#experience" class="nav-item">
+                <i class="fas fa-clinic-medical"></i>
+                <span>A Clínica</span>
+            </a>
+            <a href="#contact" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendar</span>
+            </a>
         </div>
     </nav>
 
@@ -660,7 +719,7 @@
         </form>
     </section>
 
-    <footer style="text-align: center; padding: 30px; background: var(--col-dark); color: #fff; font-size: 0.8rem;">
+    <footer style="text-align: center; padding: 30px; background: var(--col-dark); color: #fff; font-size: 0.8rem; margin-left: 80px;">
         <p>&copy; 2023 Aura Estética. Todos os direitos reservados.</p>
     </footer>
 
@@ -680,14 +739,12 @@
             }, { duration: 500, fill: "forwards" });
         });
 
-        // --- MENU ORBITAL TOGGLE ---
-        function toggleMenu() {
-            const nav = document.getElementById('navContainer');
-            nav.classList.toggle('active');
-        }
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.getElementById('navContainer').classList.remove('active');
+        // --- NAVEGAÇÃO ATIVA ---
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
