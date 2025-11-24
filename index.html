@@ -185,6 +185,14 @@
             filter: brightness(0.9);
         }
         
+        .hero-video {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -3;
+            filter: brightness(0.8);
+        }
+        
         .hero-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -259,19 +267,65 @@
             gap: 50px;
             background: linear-gradient(135deg, #FDF9F5 0%, #F7F2EC 100%);
             margin-left: 80px;
+            position: relative;
+            overflow: hidden;
         }
-        .exp-text { flex: 1; }
-        .exp-image { flex: 1; position: relative; }
+        
+        .experience::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23E8CBC8" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+            z-index: 0;
+        }
+        
+        .exp-text { flex: 1; position: relative; z-index: 1; }
+        .exp-image { flex: 1; position: relative; z-index: 1; }
         .blob-img {
             width: 100%; height: 500px; object-fit: cover;
             clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
             animation: morph 8s ease-in-out infinite;
             transition: 0.5s;
+            filter: sepia(0.1) brightness(1.05);
         }
         @keyframes morph {
             0% { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
             50% { clip-path: polygon(20% 10%, 80% 0%, 100% 40%, 90% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 20%); }
             100% { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        }
+        
+        .exp-floating {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(232, 203, 200, 0.2);
+            z-index: 0;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .exp-floating:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+        
+        .exp-floating:nth-child(2) {
+            top: 70%;
+            right: 10%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         /* --- ANTES E DEPOIS (EXPANDIDO) --- */
@@ -391,15 +445,36 @@
         }
         input:focus, textarea:focus { border-bottom-color: var(--col-accent); }
 
+        /* --- BOTÃO WHATSAPP PREMIUM --- */
         .whatsapp-float {
-            position: fixed; bottom: 40px; right: 40px;
-            background: #25D366; color: white; padding: 15px 25px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-            z-index: 999; display: flex; align-items: center; gap: 10px;
-            transition: transform 0.3s;
+            position: fixed; 
+            bottom: 40px; 
+            right: 40px;
+            background: var(--col-dark); 
+            color: var(--col-bg); 
+            padding: 15px 25px;
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 500;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            z-index: 999; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--col-dark);
         }
-        .whatsapp-float:hover { transform: translateY(-5px); }
+        
+        .whatsapp-float:hover { 
+            transform: translateY(-5px); 
+            background: rgba(42, 42, 42, 0.9);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .whatsapp-float i {
+            font-size: 1.2rem;
+            color: var(--col-accent);
+        }
 
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -475,7 +550,86 @@
             font-style: italic;
         }
 
-        /* Ajustes Mobile */
+        /* --- FOOTER COMPLETO --- */
+        .footer-main {
+            background: var(--col-dark);
+            color: #fff;
+            padding: 60px 10% 30px;
+            margin-left: 80px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--col-accent);
+        }
+        
+        .footer-section p, .footer-section a {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--col-accent);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transition: all 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background: var(--col-accent);
+            transform: translateY(-3px);
+        }
+        
+        .footer-map {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .footer-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* --- AJUSTES RESPONSIVOS --- */
         @media (max-width: 900px) {
             .treatment-row {
                 flex-direction: column !important; /* Sempre coluna no mobile */
@@ -501,7 +655,7 @@
                 display: none;
             }
             
-            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments {
+            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
                 margin-left: 60px;
             }
             
@@ -511,6 +665,34 @@
             .contact { flex-direction: column; }
             .whatsapp-float { bottom: 20px; right: 20px; padding: 12px 20px; }
             .ba-grid { grid-template-columns: 1fr; }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-social {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 428px) {
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2.2rem; }
+            .hero-content, .services, .experience, .before-after, .team, .testimonials, .contact, .detailed-treatments, .footer-main {
+                margin-left: 60px;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+            
+            .hero-content {
+                padding: 0 5%;
+            }
+            
+            .t-content h3 { font-size: 1.8rem; }
+            .t-img { height: 250px; }
+            .ba-container { height: 300px; }
+            .blob-img { height: 250px; }
         }
         
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -544,11 +726,19 @@
         </div>
     </nav>
 
+    <!-- Botão WhatsApp Premium -->
     <a href="#" class="whatsapp-float">
         <i class="fab fa-whatsapp"></i> Agende Agora
     </a>
 
     <section id="home" class="hero">
+        <!-- Opção de vídeo no hero (remova o comentário para usar) -->
+        <!--
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="seu-video.mp4" type="video/mp4">
+            Seu navegador não suporta vídeos HTML5.
+        </video>
+        -->
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -566,7 +756,7 @@
 
     <div class="treatment-row reveal">
         <div class="t-image-box">
-            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Toxina Botulínica">
+            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Toxina Botulínica" loading="lazy">
         </div>
         <div class="t-content">
             <h3>Toxina Botulínica (Botox)</h3>
@@ -578,7 +768,7 @@
 
     <div class="treatment-row reveal">
         <div class="t-image-box">
-            <img src="https://alexandremeira.com.br/wp-content/uploads/2022/03/preenchimento.png" class="t-img" alt="Preenchimento Labial">
+            <img src="https://alexandremeira.com.br/wp-content/uploads/2022/03/preenchimento.png" class="t-img" alt="Preenchimento Labial" loading="lazy">
         </div>
         <div class="t-content">
             <h3>Preenchimento & Harmonização</h3>
@@ -590,7 +780,7 @@
 
     <div class="treatment-row reveal">
         <div class="t-image-box">
-            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Bioestimuladores de Colágeno">
+            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Bioestimuladores de Colágeno" loading="lazy">
         </div>
         <div class="t-content">
             <h3>Bioestimuladores de Colágeno</h3>
@@ -602,7 +792,7 @@
 
     <div class="treatment-row reveal">
         <div class="t-image-box">
-            <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Skinbooster">
+            <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Skinbooster" loading="lazy">
         </div>
         <div class="t-content">
             <h3>Skinbooster & Glow</h3>
@@ -613,18 +803,6 @@
     </div>
 
 </section>
-
-    <section id="experience" class="experience reveal">
-        <div class="exp-image">
-            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" alt="Ambiente Clínica" class="blob-img">
-        </div>
-        <div class="exp-text">
-            <h2>Uma Experiência Sensorial</h2>
-            <p style="margin-bottom: 20px;">Não somos apenas uma clínica. A Aura é um refúgio. Do aroma sutil de chá branco ao entrar, até a tecnologia de ponta utilizada em cada procedimento, tudo foi desenhado para o seu conforto.</p>
-            <p>Aliamos protocolos médicos de alta performance com uma abordagem humana e artística.</p>
-        </div>
-    </section>
-
     <section class="before-after reveal">
         <h2 class="section-title">Resultados Reais</h2>
         <p style="max-width: 600px; margin: 0 auto; margin-bottom: 20px;">Deslize o mouse ou o dedo sobre as imagens para ver a transformação.</p>
@@ -635,8 +813,8 @@
                 <div class="ba-container interactive-ba">
                     <span class="ba-badge badge-before">Antes</span>
                     <span class="ba-badge badge-after">Depois</span>
-                    <img src="https://plus.unsplash.com/premium_photo-1664910471865-d2b3ac59a2e0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE2fHx8ZW58MHx8fHx8" class="ba-img img-before" alt="Antes">
-                    <img src="https://img.freepik.com/fotos-gratis/homem-bonito-posando-e-sorrindo_23-2149396133.jpg" class="ba-img img-after" alt="Depois">
+                    <img src="https://plus.unsplash.com/premium_photo-1664910471865-d2b3ac59a2e0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE2fHx8ZW58MHx8fHx8" class="ba-img img-before" alt="Antes" loading="lazy">
+                    <img src="https://img.freepik.com/fotos-gratis/homem-bonito-posando-e-sorrindo_23-2149396133.jpg" class="ba-img img-after" alt="Depois" loading="lazy">
                 </div>
             </div>
 
@@ -645,8 +823,8 @@
                 <div class="ba-container interactive-ba">
                     <span class="ba-badge badge-before">Antes</span>
                     <span class="ba-badge badge-after">Depois</span>
-                    <img src="https://diariodocomercio.com.br/wp-content/uploads/2022/08/mulher-na-politica-eleicoes.jpg" class="ba-img img-before" alt="Antes">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPe5QlrjOX5Ud9ONQR0X9HptnnAnrg4RyfMA&s" class="ba-img img-after" alt="Depois">
+                    <img src="https://diariodocomercio.com.br/wp-content/uploads/2022/08/mulher-na-politica-eleicoes.jpg" class="ba-img img-before" alt="Antes" loading="lazy">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPe5QlrjOX5Ud9ONQR0X9HptnnAnrg4RyfMA&s" class="ba-img img-after" alt="Depois" loading="lazy">
                 </div>
             </div>
         </div>
@@ -656,28 +834,28 @@
         <h2 class="section-title">Especialistas</h2>
         <div class="team-grid">
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=1000&auto=format&fit=crop" alt="Dra. Sofia" class="team-photo">
+                <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=1000&auto=format&fit=crop" alt="Dra. Sofia" class="team-photo" loading="lazy">
                 <div class="team-bio">
                     <h4>Dra. Sofia Alencar</h4>
                     <span>Biomédica Esteta</span>
                 </div>
             </div>
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" alt="Dra. Helena" class="team-photo">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" alt="Dra. Helena" class="team-photo" loading="lazy">
                 <div class="team-bio">
                     <h4>Dra. Helena Costa</h4>
                     <span>Dermatologista</span>
                 </div>
             </div>
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop" alt="Dra. Camila" class="team-photo">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop" alt="Dra. Camila" class="team-photo" loading="lazy">
                 <div class="team-bio">
                     <h4>Dra. Camila Mendes</h4>
                     <span>Fisioterapeuta Dermato</span>
                 </div>
             </div>
             <div class="team-member">
-                <img src="https://static.vecteezy.com/ti/fotos-gratis/p2/3491968-imagem-retrato-de-mulher-linda-encantadora-close-up-gratis-foto.jpg" alt="Beatriz Torres" class="team-photo">
+                <img src="https://static.vecteezy.com/ti/fotos-gratis/p2/3491968-imagem-retrato-de-mulher-linda-encantadora-close-up-gratis-foto.jpg" alt="Beatriz Torres" class="team-photo" loading="lazy">
                 <div class="team-bio">
                     <h4>Beatriz Torres</h4>
                     <span>Esteticista Avançada</span>
@@ -719,8 +897,46 @@
         </form>
     </section>
 
-    <footer style="text-align: center; padding: 30px; background: var(--col-dark); color: #fff; font-size: 0.8rem; margin-left: 80px;">
-        <p>&copy; 2023 Aura Estética. Todos os direitos reservados.</p>
+    <!-- Footer Completo -->
+    <footer class="footer-main">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Aura Estética</h3>
+                <p>Beleza que transforma. Cuidado que renova.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Horário de Funcionamento</h3>
+                <p>Segunda a Sexta: 9h às 19h</p>
+                <p>Sábado: 9h às 15h</p>
+                <p>Domingo: Fechado</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Av. da Beleza, 123 - Jardins</p>
+                <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
+                <p><i class="fas fa-envelope"></i> contato@auraestetica.com</p>
+                <a href="https://maps.google.com" class="btn-primary" style="margin-top: 15px; display: inline-block; padding: 10px 20px; font-size: 0.8rem;">Abrir no Google Maps</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Localização</h3>
+                <div class="footer-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.097241764916!2d-46.65390522477611!3d-23.56543536178937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Aura Estética. Todos os direitos reservados. Site feito por Weskley Gomes</p>
+        </div>
     </footer>
 
     <script>
@@ -789,6 +1005,17 @@
                 let x = e.touches[0].clientX - rect.left;
                 updateClip(x, rect.width);
             });
+        });
+
+        // --- PARALLAX EFFECT PARA EXPERIÊNCIA ---
+        window.addEventListener('scroll', () => {
+            const experienceSection = document.querySelector('.experience');
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * 0.2;
+            
+            if (experienceSection) {
+                experienceSection.style.transform = `translateY(${rate}px)`;
+            }
         });
 
     </script>
