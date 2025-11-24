@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Estética | Beleza Sensorial</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- VARIÁVEIS E RESET --- */
+        :root {
+            --col-bg: #FDFBF7; /* Off-white cremoso */
+            --col-primary: #D4B8B1; /* Rosa chá sofisticado */
+            --col-secondary: #EAE0D5; /* Nude */
+            --col-accent: #CFB56A; /* Dourado suave */
+            --col-text: #4A4A4A; /* Cinza escuro */
+            --col-dark: #1a1a1a;
+            
+            --font-title: 'Cormorant Garamond', serif;
+            --font-body: 'Montserrat', sans-serif;
+            
+            --ease-fluid: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; cursor: none; }
+
+        body {
+            background-color: var(--col-bg);
+            color: var(--col-text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* --- CURSOR CUSTOMIZADO --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--col-accent); }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid var(--col-accent);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body:hover .cursor-outline { width: 50px; height: 50px; opacity: 0.5; }
+
+        /* --- TIPOGRAFIA GERAL --- */
+        h1, h2, h3 { font-family: var(--font-title); font-weight: 400; letter-spacing: -0.02em; }
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--col-dark);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: var(--col-accent);
+            margin: 10px auto 0;
+        }
+
+        /* --- NAVEGAÇÃO ORBITAL --- */
+        .nav-container {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle {
+            width: 70px;
+            height: 70px;
+            background: var(--col-dark);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+        
+        .menu-toggle:hover { transform: scale(1.1); }
+        .menu-toggle i { font-size: 1.5rem; transition: transform 0.4s; }
+        .nav-container.active .menu-toggle i { transform: rotate(135deg); }
+
+        .nav-items {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .nav-item {
+            position: absolute;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s var(--ease-fluid);
+            color: var(--col-dark);
+            text-decoration: none;
+            font-family: var(--font-title);
+            font-size: 1.1rem;
+            font-weight: 600;
+            pointer-events: auto;
+            right: 0; bottom: 0;
+        }
+
+        .nav-item:hover { background: var(--col-primary); color: #fff; }
+
+        .nav-container.active .nav-item:nth-child(1) { bottom: 90px; right: 0; opacity: 1; transform: scale(1); transition-delay: 0.1s; }
+        .nav-container.active .nav-item:nth-child(2) { bottom: 70px; right: 70px; opacity: 1; transform: scale(1); transition-delay: 0.2s; }
+        .nav-container.active .nav-item:nth-child(3) { bottom: 0px; right: 90px; opacity: 1; transform: scale(1); transition-delay: 0.3s; }
+        .nav-container.active .nav-item:nth-child(4) { bottom: 130px; right: 40px; opacity: 1; transform: scale(1); transition-delay: 0.15s; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop') no-repeat center/cover;
+            z-index: -2;
+            filter: brightness(0.9);
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(253,251,247,0.9) 30%, rgba(253,251,247,0.1) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        .hero h1 { font-size: 5rem; line-height: 1; color: var(--col-dark); margin-bottom: 1rem; }
+        .hero h1 span { color: var(--col-accent); font-style: italic; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: var(--col-text); }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--col-dark);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            border: 1px solid var(--col-dark);
+        }
+        .btn-primary:hover { background: transparent; color: var(--col-dark); }
+
+        /* --- SERVIÇOS --- */
+        .services { padding: 100px 10%; background: #fff; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--col-bg);
+            padding: 40px 20px;
+            border-radius: 20px 100px 20px 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(212,184,177,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: scale(0); transition: transform 0.6s ease;
+        }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .service-card:hover::before { transform: scale(1); }
+        .service-card h3 { font-size: 1.8rem; margin: 15px 0; color: var(--col-dark); }
+        .service-card p { font-size: 0.9rem; line-height: 1.6; }
+        .service-icon { font-size: 2rem; color: var(--col-primary); margin-bottom: 10px; }
+
+        /* --- EXPERIÊNCIA --- */
+        .experience {
+            padding: 100px 10%;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: linear-gradient(135deg, #FDFBF7 0%, #F7F2EC 100%);
+        }
+        .exp-text { flex: 1; }
+        .exp-image { flex: 1; position: relative; }
+        .blob-img {
+            width: 100%; height: 500px; object-fit: cover;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            animation: morph 8s ease-in-out infinite;
+            transition: 0.5s;
+        }
+        @keyframes morph {
+            0% { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+            50% { clip-path: polygon(20% 10%, 80% 0%, 100% 40%, 90% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 20%); }
+            100% { clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); }
+        }
+
+        /* --- ANTES E DEPOIS (EXPANDIDO) --- */
+        .before-after { padding: 100px 10%; text-align: center; }
+        
+        .ba-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .ba-wrapper { margin-bottom: 30px; }
+        .ba-label {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--col-dark);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .ba-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            cursor: col-resize;
+        }
+        
+        .ba-img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        
+        .img-after {
+            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+            transition: clip-path 0.1s;
+        }
+        
+        .ba-badge {
+            position: absolute;
+            top: 20px;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--col-dark);
+            z-index: 5;
+        }
+        .badge-before { left: 20px; }
+        .badge-after { right: 20px; }
+
+        /* --- EQUIPE (EXPANDIDA) --- */
+        .team { padding: 100px 10%; background: #fff; }
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .team-member { 
+            text-align: center; 
+            max-width: 250px; 
+            margin-bottom: 30px;
+        }
+        .team-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--col-secondary);
+            padding: 5px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .team-member:hover .team-photo { border-color: var(--col-accent); transform: rotate(5deg); }
+        .team-bio h4 { font-family: var(--font-title); font-size: 1.4rem; color: var(--col-dark); margin-bottom: 5px;}
+        .team-bio span { color: var(--col-accent); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; font-weight: 600;}
+
+        /* --- DEPOIMENTOS --- */
+        .testimonials { padding: 100px 10%; background: var(--col-secondary); }
+        .testimonial-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 0 40px 0 40px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        .testimonial-card i { color: var(--col-accent); font-size: 2rem; margin-bottom: 10px; }
+        .testimonial-card p { font-style: italic; font-size: 1.1rem; }
+
+        /* --- CONTATO --- */
+        .contact {
+            padding: 100px 10%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            background: #fff;
+        }
+        .contact-form { flex: 1; min-width: 300px; }
+        .contact-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        input, textarea {
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            border: none; border-bottom: 1px solid #ccc;
+            background: transparent; font-family: var(--font-body);
+            outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-bottom-color: var(--col-accent); }
+
+        .whatsapp-float {
+            position: fixed; bottom: 40px; left: 40px;
+            background: #25D366; color: white; padding: 15px 25px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            z-index: 999; display: flex; align-items: center; gap: 10px;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover { transform: translateY(-5px); }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .experience { flex-direction: column; }
+            .blob-img { height: 300px; }
+            .contact { flex-direction: column; }
+            .nav-container { bottom: 20px; right: 20px; }
+            .whatsapp-float { bottom: 20px; left: 20px; padding: 12px 20px; }
+            .ba-grid { grid-template-columns: 1fr; }
+        }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        /* --- TRATAMENTOS DETALHADOS (NOVO) --- */
+.detailed-treatments {
+    padding: 100px 10%;
+    background: #fff;
+    overflow: hidden;
+}
+
+.treatment-row {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    margin-bottom: 120px;
+    position: relative;
+}
+
+/* Inverte a ordem a cada 2 itens para criar o efeito Zig-Zag */
+.treatment-row:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+/* Imagens com formas orgânicas */
+.t-image-box {
+    flex: 1;
+    position: relative;
+}
+
+.t-img {
+    width: 100%;
+    max-width: 550px;
+    height: 450px;
+    object-fit: cover;
+    /* Forma orgânica inicial */
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    box-shadow: 15px 15px 40px rgba(0,0,0,0.05);
+    transition: all 0.6s ease;
+}
+
+/* Efeito Hover na imagem */
+.treatment-row:hover .t-img {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; /* Vira círculo ou oval */
+    transform: scale(1.02);
+}
+
+.t-content {
+    flex: 1;
+}
+
+.t-content h3 {
+    font-size: 2.5rem;
+    color: var(--col-dark);
+    margin-bottom: 20px;
+}
+
+.t-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    color: var(--col-text);
+}
+
+.t-price {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    color: var(--col-accent);
+    font-style: italic;
+}
+
+/* Ajustes Mobile */
+@media (max-width: 900px) {
+    .treatment-row {
+        flex-direction: column !important; /* Sempre coluna no mobile */
+        gap: 40px;
+        margin-bottom: 80px;
+        text-align: center;
+    }
+    .t-img {
+        height: 350px;
+        width: 100%;
+    }
+    .t-content h3 { font-size: 2rem; }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="nav-container" id="navContainer">
+        <div class="nav-items">
+            <a href="#home" class="nav-item">Início</a>
+            <a href="#services" class="nav-item">Tratamentos</a>
+            <a href="#experience" class="nav-item">A Clínica</a>
+            <a href="#contact" class="nav-item">Agendar</a>
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-plus"></i>
+        </div>
+    </nav>
+
+    <a href="#" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i> Agende Agora
+    </a>
+
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Beleza que <br><span>Transforma</span>.</h1>
+            <p>Redescubra sua melhor versão em um ambiente onde a ciência estética encontra a arte do cuidado sensorial.</p>
+            <a href="#contact" class="btn-primary">Agendar Consulta</a>
+        </div>
+    </section>
+
+    <section id="services" class="detailed-treatments">
+    <h2 class="section-title">Nossos Protocolos Exclusivos</h2>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto 80px auto;">
+        Cada rosto conta uma história única. Nossos tratamentos combinam tecnologia de ponta com um olhar artístico refinado.
+    </p>
+
+    <div class="treatment-row reveal">
+        <div class="t-image-box">
+            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Toxina Botulínica">
+        </div>
+        <div class="t-content">
+            <h3>Toxina Botulínica (Botox)</h3>
+            <p>O segredo para um envelhecimento gracioso. Utilizamos a toxina para suavizar linhas de expressão e prevenir rugas estáticas, mantendo sempre a naturalidade das suas emoções.</p>
+            <p>Ideal para: Pés de galinha, linhas na testa e arqueamento sutil das sobrancelhas.</p>
+            <a href="https://wa.me/seunumerodewhatsapp?text=Olá,%20gostaria%20de%20agendar%20Botox" class="btn-primary" style="margin-top: 20px;">Agendar Botox</a>
+        </div>
+    </div>
+
+    <div class="treatment-row reveal">
+        <div class="t-image-box">
+            <img src="https://alexandremeira.com.br/wp-content/uploads/2022/03/preenchimento.png" class="t-img" alt="Preenchimento Labial">
+        </div>
+        <div class="t-content">
+            <h3>Preenchimento & Harmonização</h3>
+            <p>Esculpimos luz e sombra no seu rosto. Com ácido hialurônico premium, devolvemos o volume perdido pelo tempo e definimos contornos como mandíbula, queixo e lábios.</p>
+            <p>Técnica exclusiva <em>Aura Lips</em> para lábios desenhados e hidratados sem o efeito "bico de pato".</p>
+            <a href="https://wa.me/seunumerodewhatsapp?text=Olá,%20gostaria%20de%20agendar%20Preenchimento" class="btn-primary" style="margin-top: 20px;">Agendar Harmonização</a>
+        </div>
+    </div>
+
+    <div class="treatment-row reveal">
+        <div class="t-image-box">
+            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Bioestimuladores de Colágeno">
+        </div>
+        <div class="t-content">
+            <h3>Bioestimuladores de Colágeno</h3>
+            <p>O tratamento que faz sua pele trabalhar por você. Aplicamos substâncias (como Sculptra ou Radiesse) que obrigam seu organismo a produzir colágeno novo por até 24 meses.</p>
+            <p>Resultado: Uma pele muito mais firme, densa e com efeito lifting natural progressivo.</p>
+            <a href="https://wa.me/seunumerodewhatsapp?text=Olá,%20gostaria%20de%20agendar%20Bioestimulador" class="btn-primary" style="margin-top: 20px;">Agendar Bioestimulador</a>
+        </div>
+    </div>
+
+    <div class="treatment-row reveal">
+        <div class="t-image-box">
+            <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop" class="t-img" alt="Skinbooster">
+        </div>
+        <div class="t-content">
+            <h3>Skinbooster & Glow</h3>
+            <p>Uma injeção de vida na sua pele. Tratamento injetável de hidratação profunda que trata linhas finas e devolve aquele brilho de "pele de porcelana" que cremes não alcançam.</p>
+            <p>Perfeito para preparar a pele para eventos especiais ou recuperar o viço pós-verão.</p>
+            <a href="https://wa.me/seunumerodewhatsapp?text=Olá,%20gostaria%20de%20agendar%20Skinbooster" class="btn-primary" style="margin-top: 20px;">Agendar Glow</a>
+        </div>
+    </div>
+
+</section>
+
+    <section id="experience" class="experience reveal">
+        <div class="exp-image">
+            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" alt="Ambiente Clínica" class="blob-img">
+        </div>
+        <div class="exp-text">
+            <h2>Uma Experiência Sensorial</h2>
+            <p style="margin-bottom: 20px;">Não somos apenas uma clínica. A Aura é um refúgio. Do aroma sutil de chá branco ao entrar, até a tecnologia de ponta utilizada em cada procedimento, tudo foi desenhado para o seu conforto.</p>
+            <p>Aliamos protocolos médicos de alta performance com uma abordagem humana e artística.</p>
+        </div>
+    </section>
+
+    <section class="before-after reveal">
+        <h2 class="section-title">Resultados Reais</h2>
+        <p style="max-width: 600px; margin: 0 auto; margin-bottom: 20px;">Deslize o mouse ou o dedo sobre as imagens para ver a transformação.</p>
+        
+        <div class="ba-grid">
+            <div class="ba-wrapper">
+                <span class="ba-label">Harmonização Facial</span>
+                <div class="ba-container interactive-ba">
+                    <span class="ba-badge badge-before">Antes</span>
+                    <span class="ba-badge badge-after">Depois</span>
+                    <img src="https://plus.unsplash.com/premium_photo-1664910471865-d2b3ac59a2e0?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE2fHx8ZW58MHx8fHx8" class="ba-img img-before" alt="Antes">
+                    <img src="https://img.freepik.com/fotos-gratis/homem-bonito-posando-e-sorrindo_23-2149396133.jpg" class="ba-img img-after" alt="Depois">
+                </div>
+            </div>
+
+            <div class="ba-wrapper">
+                <span class="ba-label">Tratamento de Pele & Laser</span>
+                <div class="ba-container interactive-ba">
+                    <span class="ba-badge badge-before">Antes</span>
+                    <span class="ba-badge badge-after">Depois</span>
+                    <img src="https://diariodocomercio.com.br/wp-content/uploads/2022/08/mulher-na-politica-eleicoes.jpg" class="ba-img img-before" alt="Antes">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPe5QlrjOX5Ud9ONQR0X9HptnnAnrg4RyfMA&s" class="ba-img img-after" alt="Depois">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team reveal">
+        <h2 class="section-title">Especialistas</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=1000&auto=format&fit=crop" alt="Dra. Sofia" class="team-photo">
+                <div class="team-bio">
+                    <h4>Dra. Sofia Alencar</h4>
+                    <span>Biomédica Esteta</span>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" alt="Dra. Helena" class="team-photo">
+                <div class="team-bio">
+                    <h4>Dra. Helena Costa</h4>
+                    <span>Dermatologista</span>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop" alt="Dra. Camila" class="team-photo">
+                <div class="team-bio">
+                    <h4>Dra. Camila Mendes</h4>
+                    <span>Fisioterapeuta Dermato</span>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://static.vecteezy.com/ti/fotos-gratis/p2/3491968-imagem-retrato-de-mulher-linda-encantadora-close-up-gratis-foto.jpg" alt="Beatriz Torres" class="team-photo">
+                <div class="team-bio">
+                    <h4>Beatriz Torres</h4>
+                    <span>Esteticista Avançada</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials reveal">
+        <h2 class="section-title">Love Notes</h2>
+        <div class="testimonial-card">
+            <i class="fas fa-quote-left"></i>
+            <p>"A melhor experiência estética que já tive. O ambiente é surreal de lindo e o resultado do meu preenchimento ficou extremamente natural. Me sinto renovada."</p>
+            <h5 style="margin-top: 20px; text-align: right;">— Mariana G.</h5>
+        </div>
+        <div class="testimonial-card" style="margin-left: 10%;">
+            <i class="fas fa-quote-left"></i>
+            <p>"Profissionais incríveis que entendem o que a gente precisa sem exageros. A clínica é um verdadeiro oásis."</p>
+            <h5 style="margin-top: 20px; text-align: right;">— Carol D.</h5>
+        </div>
+    </section>
+
+    <section id="contact" class="contact reveal">
+        <div class="contact-info">
+            <h2>Agende sua Avaliação</h2>
+            <p>Estamos prontas para criar o protocolo perfeito para você.</p>
+            <div style="margin-top: 30px;">
+                <p><strong>Endereço:</strong> Av. da Beleza, 123 - Jardins</p>
+                <p><strong>Tel:</strong> (11) 99999-9999</p>
+                <p><strong>Email:</strong> contato@auraestetica.com</p>
+            </div>
+        </div>
+        <form class="contact-form">
+            <input type="text" placeholder="Seu Nome" required>
+            <input type="email" placeholder="Seu E-mail" required>
+            <input type="tel" placeholder="WhatsApp" required>
+            <textarea rows="4" placeholder="Como podemos te ajudar?"></textarea>
+            <button type="submit" class="btn-primary">Enviar Mensagem</button>
+        </form>
+    </section>
+
+    <footer style="text-align: center; padding: 30px; background: var(--col-dark); color: #fff; font-size: 0.8rem;">
+        <p>&copy; 2023 Aura Estética. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // --- CURSOR CUSTOMIZADO ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // --- MENU ORBITAL TOGGLE ---
+        function toggleMenu() {
+            const nav = document.getElementById('navContainer');
+            nav.classList.toggle('active');
+        }
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.getElementById('navContainer').classList.remove('active');
+            });
+        });
+
+        // --- SCROLL REVEAL ---
+        window.addEventListener('scroll', reveal);
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        reveal();
+
+        // --- ANTES E DEPOIS INTERATIVO (MÚLTIPLOS) ---
+        // Agora funciona para todos os elementos com a classe .interactive-ba
+        const containers = document.querySelectorAll('.interactive-ba');
+
+        containers.forEach(container => {
+            const imgAfter = container.querySelector('.img-after');
+
+            // Função para atualizar o clip-path
+            function updateClip(x, rectWidth) {
+                let percent = (x / rectWidth) * 100;
+                if(percent < 0) percent = 0;
+                if(percent > 100) percent = 100;
+                imgAfter.style.clipPath = `polygon(${percent}% 0, 100% 0, 100% 100%, ${percent}% 100%)`;
+            }
+
+            container.addEventListener('mousemove', (e) => {
+                let rect = container.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                updateClip(x, rect.width);
+            });
+
+            container.addEventListener('touchmove', (e) => {
+                let rect = container.getBoundingClientRect();
+                let x = e.touches[0].clientX - rect.left;
+                updateClip(x, rect.width);
+            });
+        });
+
+    </script>
+</body>
+</html>
