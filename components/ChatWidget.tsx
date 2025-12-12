@@ -80,7 +80,7 @@ export const ChatWidget: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // process.env.API_KEY is replaced by Vite at build time, and types are handled by @types/node or vite-env
+    // Access process.env.API_KEY directly as per SDK requirement and Vite define replacement
     const apiKey = process.env.API_KEY;
     if (apiKey) {
       try {
@@ -138,6 +138,7 @@ export const ChatWidget: React.FC = () => {
           const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
           
           // Send result back to model
+          // Sending the function response
           result = await chatSession.sendMessage({
             message: [{
               functionResponse: {
