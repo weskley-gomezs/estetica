@@ -3,6 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
 import { GoogleGenAI, Chat } from "@google/genai";
 
+// Fix for TypeScript not recognizing process in the browser environment
+// even though Vite polyfills it during build.
+declare const process: {
+  env: {
+    API_KEY: string;
+  }
+};
+
 interface Message {
   id: string;
   role: 'user' | 'model';
@@ -35,9 +43,12 @@ export const ChatWidget: React.FC = () => {
 
   // Initialize Chat Session
   useEffect(() => {
-    if (process.env.API_KEY) {
+    // Check if API_KEY exists to avoid runtime crashes if environment variable is missing
+    const apiKey = process.env.API_KEY;
+    
+    if (apiKey) {
       try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: apiKey });
         const chat = ai.chats.create({
           model: 'gemini-2.5-flash',
           config: {
@@ -48,6 +59,8 @@ export const ChatWidget: React.FC = () => {
       } catch (error) {
         console.error("Error initializing AI:", error);
       }
+    } else {
+      console.warn("API Key not found. Chat will not function.");
     }
   }, []);
 
@@ -57,16 +70,29 @@ export const ChatWidget: React.FC = () => {
   }, [messages, isOpen, isLoading]);
 
   const handleSend = async () => {
-    if (!inputValue.trim() || !chatSession) return;
-
+    if (!inputValue.trim()) return;
+    
     const userMsg: Message = { id: Date.now().toString(), role: 'user', text: inputValue };
     setMessages(prev => [...prev, userMsg]);
     setInputValue('');
     setIsLoading(true);
 
+    if (!chatSession) {
+       // Fallback if no API key or init failed
+       setTimeout(() => {
+         setMessages(prev => [...prev, { 
+           id: Date.now().toString(), 
+           role: 'model', 
+           text: "No momento, nosso serviço de atendimento inteligente está indisponível. Por favor, entre em contato pelo telefone ou WhatsApp." 
+         }]);
+         setIsLoading(false);
+       }, 1000);
+       return;
+    }
+
     try {
       const result = await chatSession.sendMessage({ message: userMsg.text });
-      const responseText = result.text; // Access .text directly property from GenerateContentResponse
+      const responseText = result.text;
 
       const aiMsg: Message = { 
         id: (Date.now() + 1).toString(), 
