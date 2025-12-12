@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronsLeftRight } from 'lucide-react';
 
 export const BeforeAfter: React.FC = () => {
@@ -16,7 +16,7 @@ export const BeforeAfter: React.FC = () => {
   };
 
   const onMouseDown = () => (isDragging.current = true);
-  const onMouseUp = () => (isDragging.current = false);
+  
   const onMouseMove = (e: React.MouseEvent) => {
     if (isDragging.current) handleMove(e.clientX);
   };

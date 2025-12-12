@@ -14,6 +14,7 @@ export const About: React.FC = () => {
           <div className="relative order-2 lg:order-1">
             <motion.div 
               className="relative z-10 rounded-tr-[100px] rounded-bl-[100px] overflow-hidden shadow-2xl"
+              style={{ y }}
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5 }}
             >
