@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Sparkles, Loader2, CalendarCheck } from 'lucide-react';
+import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
 import { GoogleGenAI, Chat } from "@google/genai";
-import { WHATSAPP_NUMBER } from '../utils/constants';
 
 interface Message {
   id: string;
   role: 'user' | 'model';
   text: string;
-  actionLink?: string; // Optional field kept for potential future use or generic links
 }
 
 const SYSTEM_INSTRUCTION = `
@@ -67,7 +65,6 @@ export const ChatWidget: React.FC = () => {
           model: 'gemini-2.5-flash',
           config: {
             systemInstruction: SYSTEM_INSTRUCTION,
-            // Tools removed as per request to stop scheduling
           },
         });
         setChatSession(chat);
@@ -178,21 +175,6 @@ export const ChatWidget: React.FC = () => {
                   >
                     {formatMessage(msg.text)}
                   </div>
-                  
-                  {/* Action Link Button (Only rendered if message has actionLink - currently unused but kept for structure) */}
-                  {msg.actionLink && (
-                    <motion.a 
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      href={msg.actionLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg hover:shadow-green-200/50 transition-all"
-                    >
-                      <CalendarCheck size={14} />
-                      Confirmar no WhatsApp
-                    </motion.a>
-                  )}
                 </motion.div>
               ))}
               
