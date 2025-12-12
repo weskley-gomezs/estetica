@@ -1,21 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Sparkles, Loader2, CalendarCheck } from 'lucide-react';
-import { GoogleGenAI, Chat, FunctionDeclaration, Type } from "@google/genai";
+import { GoogleGenAI, Chat } from "@google/genai";
 import { WHATSAPP_NUMBER } from '../utils/constants';
 
 interface Message {
   id: string;
   role: 'user' | 'model';
   text: string;
-  actionLink?: string; // Optional field for the generated WhatsApp link
+  actionLink?: string; // Optional field kept for potential future use or generic links
 }
 
 const SYSTEM_INSTRUCTION = `
 Você é a "Serene AI", Concierge Digital de ultra-luxo da clínica "Serene Aesthetics".
 
 **Objetivo Principal:**
-Auxiliar clientes com dúvidas e realizar agendamentos de forma proativa e elegante.
+Atuar estritamente como uma consultora de beleza, tirando dúvidas sobre procedimentos, benefícios e cuidados.
 
 **Regras de Formatação Visual (IMPORTANTE):**
 Para não deixar o texto bagunçado, siga estritamente esta estrutura ao explicar procedimentos:
@@ -26,15 +26,9 @@ Para não deixar o texto bagunçado, siga estritamente esta estrutura ao explica
 5. **Detalhes/Recuperação:** Uma frase final de fechamento.
 6. **Use Negrito** (entre asteriscos duplos, ex: **Botox**) para destacar o nome do procedimento e termos chaves.
 
-**Fluxo de Agendamento (CRUCIAL):**
-Se o usuário mencionar "agendar", "marcar", "consulta" ou "horário", você NÃO deve dar o link do WhatsApp imediatamente.
-Você deve coletar estas 4 informações obrigatórias, uma por uma ou todas juntas:
-1. **Nome** do cliente.
-2. **Procedimento** de interesse.
-3. **Dia** preferido.
-4. **Horário** preferido.
-
-SOMENTE quando você tiver TODAS as 4 informações, você deve chamar a função \`generate_appointment_link\`.
+**Sobre Agendamentos:**
+Você **NÃO** realiza agendamentos diretamente e **NÃO** deve pedir dados pessoais (nome, horário, telefone).
+Se o cliente manifestar interesse em agendar ou perguntar valores específicos, oriente-o de forma elegante a clicar no botão "Agendar" ou no ícone do WhatsApp presentes no site para falar com a recepção humana.
 
 **Regras de Estilo:**
 - Seja breve, polida e sofisticada.
@@ -51,22 +45,6 @@ SOMENTE quando você tiver TODAS as 4 informações, você deve chamar a funçã
 
 O tempo de recuperação é mínimo, permitindo retorno rápido à rotina."
 `;
-
-// Define the tool for function calling
-const appointmentTool: FunctionDeclaration = {
-  name: "generate_appointment_link",
-  description: "Gera um link de agendamento para o WhatsApp quando todas as informações (nome, procedimento, dia, hora) foram coletadas.",
-  parameters: {
-    type: Type.OBJECT,
-    properties: {
-      clientName: { type: Type.STRING, description: "Nome do cliente" },
-      procedure: { type: Type.STRING, description: "Procedimento desejado" },
-      date: { type: Type.STRING, description: "Dia desejado" },
-      time: { type: Type.STRING, description: "Horário desejado" }
-    },
-    required: ["clientName", "procedure", "date", "time"]
-  }
-};
 
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,7 +67,7 @@ export const ChatWidget: React.FC = () => {
           model: 'gemini-2.5-flash',
           config: {
             systemInstruction: SYSTEM_INSTRUCTION,
-            tools: [{ functionDeclarations: [appointmentTool] }]
+            // Tools removed as per request to stop scheduling
           },
         });
         setChatSession(chat);
@@ -123,50 +101,14 @@ export const ChatWidget: React.FC = () => {
     setIsLoading(true);
 
     try {
-      let result = await chatSession.sendMessage({ message: userMsg.text });
+      const result = await chatSession.sendMessage({ message: userMsg.text });
+      const responseText = result.text;
       
-      // Handle Function Calls
-      const functionCalls = result.functionCalls;
-      
-      if (functionCalls && functionCalls.length > 0) {
-        const call = functionCalls[0];
-        if (call.name === 'generate_appointment_link') {
-          const args = call.args as any;
-          
-          // Generate WhatsApp URL
-          const text = `Olá! Sou ${args.clientName}, gostaria de confirmar o agendamento de *${args.procedure}* para o dia *${args.date}* às *${args.time}*.`;
-          const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-          
-          // Send result back to model
-          // Sending the function response
-          result = await chatSession.sendMessage({
-            message: [{
-              functionResponse: {
-                name: call.name,
-                response: { success: true, url: whatsappUrl },
-                id: call.id
-              }
-            }]
-          });
-
-          // Add message with Action Link
-          const responseText = result.text || "Preparei seu agendamento. Por favor, confirme clicando abaixo. ✨";
-          setMessages(prev => [...prev, { 
-            id: (Date.now() + 1).toString(), 
-            role: 'model', 
-            text: responseText,
-            actionLink: whatsappUrl
-          }]);
-        }
-      } else {
-        // Normal text response
-        const responseText = result.text;
-        setMessages(prev => [...prev, { 
-          id: (Date.now() + 1).toString(), 
-          role: 'model', 
-          text: responseText || "Perdão, não compreendi. Poderia reformular?"
-        }]);
-      }
+      setMessages(prev => [...prev, { 
+        id: (Date.now() + 1).toString(), 
+        role: 'model', 
+        text: responseText || "Perdão, não compreendi. Poderia reformular?"
+      }]);
 
     } catch (error) {
       console.error("Chat error:", error);
@@ -237,7 +179,7 @@ export const ChatWidget: React.FC = () => {
                     {formatMessage(msg.text)}
                   </div>
                   
-                  {/* Action Link Button for Appointments */}
+                  {/* Action Link Button (Only rendered if message has actionLink - currently unused but kept for structure) */}
                   {msg.actionLink && (
                     <motion.a 
                       initial={{ scale: 0.9, opacity: 0 }}
