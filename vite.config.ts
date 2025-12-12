@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    build: {
+      outDir: 'dist', // Ensure output directory is standard for Vercel
+    },
     define: {
       // Stringify the API key so it is inserted as a string literal in the client code
       'process.env.API_KEY': JSON.stringify(env.API_KEY),
