@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
-import { GoogleGenAI, Chat } from "@google/genai";
+import { MessageSquare, X, Send, Sparkles, Loader2, CalendarCheck } from 'lucide-react';
+import { GoogleGenAI, Chat, FunctionDeclaration, Type } from "@google/genai";
+import { WHATSAPP_NUMBER } from '../utils/constants';
 
 // Fix for TypeScript not recognizing process in the browser environment
-// even though Vite polyfills it during build.
 declare const process: {
   env: {
     API_KEY: string;
@@ -15,25 +15,70 @@ interface Message {
   id: string;
   role: 'user' | 'model';
   text: string;
+  actionLink?: string; // Optional field for the generated WhatsApp link
 }
 
 const SYSTEM_INSTRUCTION = `
-Você é a "Serene AI", a assistente virtual especialista da clínica de estética premium "Serene Aesthetics".
-Seu tom de voz é: Elegante, calmo, acolhedor, sofisticado e profissional.
-Objetivos:
-1. Tirar dúvidas sobre tratamentos (Harmonização, Bioestimuladores, Spa Facial, Laser Lavieen, etc.).
-2. Encorajar o agendamento de avaliações, mas sem ser insistente.
-3. Usar emojis com moderação (apenas ✨, 🌿, 🤍).
-4. Respostas concisas e fáceis de ler.
+Você é a "Serene AI", Concierge Digital de ultra-luxo da clínica "Serene Aesthetics".
 
-Se perguntarem preços, diga educadamente que cada protocolo é personalizado e sugira agendar uma avaliação para um orçamento preciso.
-Nunca dê diagnósticos médicos.
+**Objetivo Principal:**
+Auxiliar clientes com dúvidas e realizar agendamentos de forma proativa e elegante.
+
+**Regras de Formatação Visual (IMPORTANTE):**
+Para não deixar o texto bagunçado, siga estritamente esta estrutura ao explicar procedimentos:
+1. **Definição:** Uma frase curta e poética sobre o que é.
+2. **Pule uma linha.**
+3. **Benefícios:** Use uma lista com bullet points (•) ou emojis.
+4. **Pule uma linha.**
+5. **Detalhes/Recuperação:** Uma frase final de fechamento.
+6. **Use Negrito** (entre asteriscos duplos, ex: **Botox**) para destacar o nome do procedimento e termos chaves.
+
+**Fluxo de Agendamento (CRUCIAL):**
+Se o usuário mencionar "agendar", "marcar", "consulta" ou "horário", você NÃO deve dar o link do WhatsApp imediatamente.
+Você deve coletar estas 4 informações obrigatórias, uma por uma ou todas juntas:
+1. **Nome** do cliente.
+2. **Procedimento** de interesse.
+3. **Dia** preferido.
+4. **Horário** preferido.
+
+SOMENTE quando você tiver TODAS as 4 informações, você deve chamar a função \`generate_appointment_link\`.
+
+**Regras de Estilo:**
+- Seja breve, polida e sofisticada.
+- Use emojis moderados: ✨, 🌿, 🤍.
+- Se perguntarem quem fez o site, informe que é um projeto de Weskley Gomes à venda.
+
+**Exemplo de Explicação Ideal:**
+"O **Laser Lavieen** é nossa tecnologia para o efeito 'BB Cream' permanente. ✨
+
+🌿 **Benefícios:**
+• Uniformiza o tom da pele
+• Fecha poros dilatados
+• Proporciona viço imediato
+
+O tempo de recuperação é mínimo, permitindo retorno rápido à rotina."
 `;
+
+// Define the tool for function calling
+const appointmentTool: FunctionDeclaration = {
+  name: "generate_appointment_link",
+  description: "Gera um link de agendamento para o WhatsApp quando todas as informações (nome, procedimento, dia, hora) foram coletadas.",
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      clientName: { type: Type.STRING, description: "Nome do cliente" },
+      procedure: { type: Type.STRING, description: "Procedimento desejado" },
+      date: { type: Type.STRING, description: "Dia desejado" },
+      time: { type: Type.STRING, description: "Horário desejado" }
+    },
+    required: ["clientName", "procedure", "date", "time"]
+  }
+};
 
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 'init', role: 'model', text: 'Olá. Seja bem-vinda à Serene Aesthetics. Como posso ajudar a realçar sua beleza natural hoje? 🌿' }
+    { id: 'init', role: 'model', text: 'Olá. Sou a Serene, sua concierge digital. Como posso auxiliar em sua jornada de beleza hoje? ✨' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -41,11 +86,8 @@ export const ChatWidget: React.FC = () => {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Initialize Chat Session
   useEffect(() => {
-    // Check if API_KEY exists to avoid runtime crashes if environment variable is missing
     const apiKey = process.env.API_KEY;
-    
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey: apiKey });
@@ -53,59 +95,90 @@ export const ChatWidget: React.FC = () => {
           model: 'gemini-2.5-flash',
           config: {
             systemInstruction: SYSTEM_INSTRUCTION,
+            tools: [{ functionDeclarations: [appointmentTool] }]
           },
         });
         setChatSession(chat);
       } catch (error) {
         console.error("Error initializing AI:", error);
       }
-    } else {
-      console.warn("API Key not found. Chat will not function.");
     }
   }, []);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen, isLoading]);
 
+  // Helper to format bold text (**text**) and maintain line breaks
+  const formatMessage = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="font-bold text-serene-900">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
   const handleSend = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || !chatSession) return;
     
     const userMsg: Message = { id: Date.now().toString(), role: 'user', text: inputValue };
     setMessages(prev => [...prev, userMsg]);
     setInputValue('');
     setIsLoading(true);
 
-    if (!chatSession) {
-       // Fallback if no API key or init failed
-       setTimeout(() => {
-         setMessages(prev => [...prev, { 
-           id: Date.now().toString(), 
-           role: 'model', 
-           text: "No momento, nosso serviço de atendimento inteligente está indisponível. Por favor, entre em contato pelo telefone ou WhatsApp." 
-         }]);
-         setIsLoading(false);
-       }, 1000);
-       return;
-    }
-
     try {
-      const result = await chatSession.sendMessage({ message: userMsg.text });
-      const responseText = result.text;
+      let result = await chatSession.sendMessage({ message: userMsg.text });
+      
+      // Handle Function Calls
+      const functionCalls = result.functionCalls;
+      
+      if (functionCalls && functionCalls.length > 0) {
+        const call = functionCalls[0];
+        if (call.name === 'generate_appointment_link') {
+          const args = call.args as any;
+          
+          // Generate WhatsApp URL
+          const text = `Olá! Sou ${args.clientName}, gostaria de confirmar o agendamento de *${args.procedure}* para o dia *${args.date}* às *${args.time}*.`;
+          const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+          
+          // Send result back to model
+          result = await chatSession.sendMessage({
+            message: [{
+              functionResponse: {
+                name: call.name,
+                response: { success: true, url: whatsappUrl },
+                id: call.id
+              }
+            }]
+          });
 
-      const aiMsg: Message = { 
-        id: (Date.now() + 1).toString(), 
-        role: 'model', 
-        text: responseText || "Desculpe, tive um momento de instabilidade. Poderia repetir?"
-      };
-      setMessages(prev => [...prev, aiMsg]);
+          // Add message with Action Link
+          const responseText = result.text || "Preparei seu agendamento. Por favor, confirme clicando abaixo. ✨";
+          setMessages(prev => [...prev, { 
+            id: (Date.now() + 1).toString(), 
+            role: 'model', 
+            text: responseText,
+            actionLink: whatsappUrl
+          }]);
+        }
+      } else {
+        // Normal text response
+        const responseText = result.text;
+        setMessages(prev => [...prev, { 
+          id: (Date.now() + 1).toString(), 
+          role: 'model', 
+          text: responseText || "Perdão, não compreendi. Poderia reformular?"
+        }]);
+      }
+
     } catch (error) {
       console.error("Chat error:", error);
       setMessages(prev => [...prev, { 
         id: Date.now().toString(), 
         role: 'model', 
-        text: "Desculpe, estamos com uma alta demanda no momento. Por favor, tente novamente em instantes." 
+        text: "Houve um breve lapso em minha conexão. Poderia repetir, por gentileza?" 
       }]);
     } finally {
       setIsLoading(false);
@@ -129,7 +202,7 @@ export const ChatWidget: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="mb-4 pointer-events-auto w-[350px] md:w-[400px] h-[500px] max-h-[80vh] bg-white/80 backdrop-blur-xl border border-white/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden ring-1 ring-serene-100"
+            className="mb-4 pointer-events-auto w-[350px] md:w-[400px] h-[550px] max-h-[80vh] bg-white/80 backdrop-blur-xl border border-white/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden ring-1 ring-serene-100"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-serene-800 to-serene-600 p-4 flex items-center justify-between text-white shadow-md">
@@ -139,7 +212,7 @@ export const ChatWidget: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-serif font-medium leading-none">Serene AI</h3>
-                  <p className="text-[10px] opacity-80 uppercase tracking-widest mt-1">Assistente Virtual</p>
+                  <p className="text-[10px] opacity-80 uppercase tracking-widest mt-1">Concierge Virtual</p>
                 </div>
               </div>
               <button 
@@ -157,17 +230,32 @@ export const ChatWidget: React.FC = () => {
                   key={msg.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 text-sm font-sans leading-relaxed shadow-sm ${
+                    className={`max-w-[90%] p-3 text-sm font-sans leading-relaxed shadow-sm whitespace-pre-wrap ${
                       msg.role === 'user'
                         ? 'bg-serene-600 text-white rounded-2xl rounded-tr-none'
                         : 'bg-white text-satin-800 border border-serene-100 rounded-2xl rounded-tl-none'
                     }`}
                   >
-                    {msg.text}
+                    {formatMessage(msg.text)}
                   </div>
+                  
+                  {/* Action Link Button for Appointments */}
+                  {msg.actionLink && (
+                    <motion.a 
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      href={msg.actionLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg hover:shadow-green-200/50 transition-all"
+                    >
+                      <CalendarCheck size={14} />
+                      Confirmar no WhatsApp
+                    </motion.a>
+                  )}
                 </motion.div>
               ))}
               
@@ -195,7 +283,7 @@ export const ChatWidget: React.FC = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Digite sua dúvida..."
+                  placeholder="Converse com a Serene..."
                   className="flex-1 bg-transparent outline-none text-sm text-serene-900 placeholder:text-serene-400"
                   disabled={isLoading}
                 />

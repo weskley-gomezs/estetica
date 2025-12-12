@@ -1,9 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 import { Button } from './ui/Button';
+import { openWhatsApp } from '../utils/constants';
 
 export const Contact: React.FC = () => {
+  const handleWhatsApp = () => {
+    openWhatsApp();
+  };
+
   return (
     <section id="contact" className="py-24 bg-white">
       <div className="container mx-auto px-6">
@@ -27,28 +32,21 @@ export const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* Form */}
-          <div className="bg-serene-50 p-10 rounded-3xl shadow-float border border-serene-100">
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputWrapper label="Nome">
-                  <input type="text" className="w-full bg-white border border-serene-200 rounded-lg p-3 focus:ring-2 focus:ring-serene-300 focus:border-transparent outline-none transition-all" />
-                </InputWrapper>
-                <InputWrapper label="Telefone">
-                  <input type="tel" className="w-full bg-white border border-serene-200 rounded-lg p-3 focus:ring-2 focus:ring-serene-300 focus:border-transparent outline-none transition-all" />
-                </InputWrapper>
-              </div>
-              <InputWrapper label="Email">
-                <input type="email" className="w-full bg-white border border-serene-200 rounded-lg p-3 focus:ring-2 focus:ring-serene-300 focus:border-transparent outline-none transition-all" />
-              </InputWrapper>
-              <InputWrapper label="Mensagem">
-                <textarea rows={4} className="w-full bg-white border border-serene-200 rounded-lg p-3 focus:ring-2 focus:ring-serene-300 focus:border-transparent outline-none transition-all" />
-              </InputWrapper>
-              
-              <Button className="w-full justify-center mt-4">
-                Enviar Mensagem
-              </Button>
-            </form>
+          {/* Form / Actions */}
+          <div className="bg-serene-50 p-10 rounded-3xl shadow-float border border-serene-100 flex flex-col justify-center">
+            <h3 className="font-serif text-3xl text-serene-800 mb-6">Atendimento Exclusivo</h3>
+            <p className="text-satin-800/70 mb-8">
+              Para oferecer um atendimento mais ágil e personalizado, centralizamos nossos agendamentos via WhatsApp.
+            </p>
+            
+            <Button onClick={handleWhatsApp} className="w-full justify-center bg-green-600 hover:bg-green-700 border-none shadow-none hover:shadow-lg">
+              <MessageCircle className="mr-2" />
+              Chamar no WhatsApp
+            </Button>
+            
+            <p className="text-center text-xs text-satin-800/40 mt-6">
+              Nossa equipe responderá o mais breve possível.
+            </p>
           </div>
         </div>
       </div>
@@ -69,11 +67,4 @@ const ContactItem: React.FC<{ icon: any, title: string, text: string }> = ({ ico
       <p className="text-satin-800/60 text-sm">{text}</p>
     </div>
   </motion.div>
-);
-
-const InputWrapper: React.FC<{ label: string, children: React.ReactNode }> = ({ label, children }) => (
-  <div>
-    <label className="block text-xs font-bold uppercase tracking-wider text-serene-600 mb-2">{label}</label>
-    {children}
-  </div>
 );

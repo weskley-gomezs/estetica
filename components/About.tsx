@@ -19,9 +19,9 @@ export const About: React.FC = () => {
               transition={{ duration: 0.5 }}
             >
               <img 
-                src="https://picsum.photos/seed/doctor_spa/800/1000" 
-                alt="Dra. Fundadora" 
-                className="w-full h-auto object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700"
+                src="https://clinicademilhoes.com/wp-content/uploads/2022/10/Projeto-de-clinica-de-estetica-em-sao-paulo-tatuape-1.jpg" 
+                alt="Interior da Clínica Serene" 
+                className="w-full h-auto object-cover grayscale-[10%] hover:grayscale-0 transition-all duration-700"
               />
             </motion.div>
             

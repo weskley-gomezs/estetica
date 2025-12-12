@@ -1,48 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Feather, Droplets, Sun, Activity, User, Heart } from 'lucide-react';
-import { Service } from '../types';
+import { Feather } from 'lucide-react';
+import { servicesData } from '../data/servicesData';
+import { ServiceDetail } from '../data/servicesData';
 
-const services: Service[] = [
-  {
-    id: '1',
-    title: 'Harmonização Natural',
-    description: 'Protocolos minimamente invasivos que respeitam seus traços únicos.',
-    icon: User,
-  },
-  {
-    id: '2',
-    title: 'Bioestimuladores',
-    description: 'Ativação profunda de colágeno para uma pele firme e radiante.',
-    icon: Activity,
-  },
-  {
-    id: '3',
-    title: 'Spa Facial',
-    description: 'Limpeza, hidratação e massagens que renovam a textura da pele.',
-    icon: Droplets,
-  },
-  {
-    id: '4',
-    title: 'Laser Lavieen',
-    description: 'Tecnologia de ponta para o "efeito BB Glow" permanente.',
-    icon: Sun,
-  },
-  {
-    id: '5',
-    title: 'Microagulhamento',
-    description: 'Renovação celular para cicatrizes, poros e textura irregular.',
-    icon: Feather,
-  },
-  {
-    id: '6',
-    title: 'Nutrologia Estética',
-    description: 'Cuidado de dentro para fora, focando na saúde da pele e longevidade.',
-    icon: Heart,
-  },
-];
+interface ServicesProps {
+  onSelectService: (service: ServiceDetail) => void;
+}
 
-export const Services: React.FC = () => {
+export const Services: React.FC<ServicesProps> = ({ onSelectService }) => {
   return (
     <section id="services" className="py-24 bg-gradient-to-b from-serene-50 to-white relative overflow-hidden">
       <div className="container mx-auto px-6">
@@ -64,8 +30,13 @@ export const Services: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
+          {servicesData.map((service, index) => (
+            <ServiceCard 
+              key={service.id} 
+              service={service} 
+              index={index} 
+              onClick={() => onSelectService(service)}
+            />
           ))}
         </div>
       </div>
@@ -73,7 +44,7 @@ export const Services: React.FC = () => {
   );
 };
 
-const ServiceCard: React.FC<{ service: Service; index: number }> = ({ service, index }) => {
+const ServiceCard: React.FC<{ service: ServiceDetail; index: number; onClick: () => void }> = ({ service, index, onClick }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -81,7 +52,7 @@ const ServiceCard: React.FC<{ service: Service; index: number }> = ({ service, i
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ y: -10 }}
-      className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-float transition-all duration-500 border border-serene-100"
+      className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-float transition-all duration-500 border border-serene-100 flex flex-col h-full"
     >
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-serene-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
       
@@ -95,14 +66,17 @@ const ServiceCard: React.FC<{ service: Service; index: number }> = ({ service, i
       </div>
 
       <h3 className="font-serif text-2xl text-serene-900 mb-3">{service.title}</h3>
-      <p className="font-sans text-satin-800/70 leading-relaxed text-sm">
+      <p className="font-sans text-satin-800/70 leading-relaxed text-sm mb-6 flex-grow">
         {service.description}
       </p>
 
-      <div className="mt-6 flex items-center gap-2 text-serene-500 text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
+      <button 
+        onClick={onClick}
+        className="mt-auto flex items-center gap-2 text-serene-500 text-sm font-medium opacity-100 group-hover:text-serene-700 transition-all duration-300 group-hover:translate-x-2"
+      >
         <span>Saiba mais</span>
         <Feather size={14} />
-      </div>
+      </button>
     </motion.div>
   );
 };

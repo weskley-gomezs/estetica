@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sparkles } from 'lucide-react';
 import { NavItem } from '../types';
+import { openWhatsApp } from '../utils/constants';
+
+interface NavbarProps {
+  onNavigate: (href: string) => void;
+}
 
 const navItems: NavItem[] = [
   { label: 'Início', href: '#hero' },
@@ -11,7 +16,7 @@ const navItems: NavItem[] = [
   { label: 'Contato', href: '#contact' },
 ];
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -21,102 +26,121 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavClick = (href: string) => {
+    setMobileMenuOpen(false);
+    onNavigate(href);
+  };
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm py-4' 
-          : 'bg-transparent py-6'
-      }`}
-    >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <motion.div 
-          className="flex items-center gap-2 cursor-pointer"
-          whileHover={{ scale: 1.02 }}
-        >
-          <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+    <>
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ 
+          y: 0, 
+          opacity: 1,
+          top: scrolled ? 24 : 0,
+          width: scrolled ? '90%' : '100%',
+          maxWidth: scrolled ? '1100px' : '100%',
+          borderRadius: scrolled ? '50px' : '0px',
+          backgroundColor: scrolled ? 'rgba(19, 64, 64, 0.85)' : 'rgba(0, 0, 0, 0)',
+          borderWidth: scrolled ? '1px' : '0px',
+          borderColor: scrolled ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0)',
+          backdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
+          boxShadow: scrolled ? '0 20px 50px -12px rgba(0, 0, 0, 0.5)' : 'none',
+        }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed z-50 left-0 right-0 mx-auto overflow-hidden"
+      >
+        <div className={`flex items-center justify-between px-6 transition-all duration-500 ${scrolled ? 'py-3' : 'py-6 container mx-auto'}`}>
+          {/* Logo */}
+          <motion.div 
+            className="flex items-center gap-2 cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            onClick={() => handleNavClick('#hero')}
           >
-            <Sparkles className="w-6 h-6 text-serene-500" />
-          </motion.div>
-          <span className="font-serif text-2xl font-semibold text-serene-900 tracking-wide">
-            SERENE
-          </span>
-        </motion.div>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="relative text-serene-800/80 font-sans text-sm font-medium tracking-wider hover:text-serene-600 transition-colors group"
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative"
             >
-              {item.label}
-              <motion.span
-                className="absolute -bottom-1 left-0 w-full h-[1px] bg-serene-400 origin-left"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              <motion.div
-                className="absolute -inset-2 bg-serene-100/50 rounded-lg -z-10 opacity-0"
-                whileHover={{ opacity: 1 }}
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </a>
-          ))}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-serene-800 text-white px-6 py-2 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-serene-900 transition-colors"
+              <div className="absolute inset-0 bg-serene-400 blur-md opacity-50" />
+              <Sparkles className={`w-6 h-6 ${scrolled ? 'text-serene-300' : 'text-serene-100'} relative z-10`} />
+            </motion.div>
+            <span className={`font-serif text-2xl font-semibold tracking-wide text-white`}>
+              SERENE
+            </span>
+          </motion.div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => handleNavClick(item.href)}
+                className={`relative font-sans text-sm font-medium tracking-wider transition-colors group ${
+                  scrolled ? 'text-serene-100/80 hover:text-white' : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {item.label}
+                <motion.span
+                  className="absolute -bottom-1 left-0 w-full h-[1px] bg-serene-400 origin-left"
+                  initial={{ scaleX: 0 }}
+                  whileHover={{ scaleX: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </button>
+            ))}
+            <motion.button
+              onClick={() => openWhatsApp()}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-6 py-2 rounded-full font-sans text-xs uppercase tracking-widest transition-colors border ${
+                scrolled 
+                  ? 'bg-serene-400 text-serene-900 border-serene-400 hover:bg-serene-300' 
+                  : 'bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white/20'
+              }`}
+            >
+              Agendar
+            </motion.button>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button 
+            className="md:hidden text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            Agendar
-          </motion.button>
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
         </div>
+      </motion.nav>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-serene-900"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: '100vh' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-serene-100 overflow-hidden"
+            initial={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
+            animate={{ opacity: 1, clipPath: "circle(150% at 100% 0)" }}
+            exit={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-40 bg-serene-900 flex flex-col items-center justify-center"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-8 pb-24">
+            <div className="flex flex-col gap-8 text-center">
               {navItems.map((item, i) => (
-                <motion.a
+                <motion.button
                   key={item.label}
-                  href={item.href}
+                  onClick={() => handleNavClick(item.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="font-serif text-3xl text-serene-900 hover:text-serene-500"
-                  onClick={() => setMobileMenuOpen(false)}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="font-serif text-4xl text-serene-100 hover:text-serene-400"
                 >
                   {item.label}
-                </motion.a>
+                </motion.button>
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };

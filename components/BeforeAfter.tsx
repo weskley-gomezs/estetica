@@ -49,7 +49,7 @@ export const BeforeAfter: React.FC = () => {
           >
             {/* After Image (Background) */}
             <img 
-              src="https://picsum.photos/seed/face_after/1200/900" 
+              src="https://media.istockphoto.com/id/2157073168/pt/foto/portrait-of-attractive-brunette-long-haired-woman-smiling-at-camera.jpg?s=612x612&w=0&k=20&c=Opiwx9Sen8IeSsSZ912gpwkYW9hAKSE-uDmlesuUsEY=" 
               alt="Depois" 
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -60,7 +60,7 @@ export const BeforeAfter: React.FC = () => {
               style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
             >
               <img 
-                src="https://picsum.photos/seed/face_before/1200/900" 
+                src="https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg" 
                 alt="Antes" 
                 className="absolute inset-0 w-full h-full object-cover grayscale"
               />

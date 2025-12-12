@@ -1,29 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import { Button } from './ui/Button';
+import { openWhatsApp } from '../utils/constants';
+
+// Typewriter Component
+const TypewriterText = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Blinking cursor
+  useEffect(() => {
+    const timeout = setInterval(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearInterval(timeout);
+  }, []);
+
+  // Typing logic
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setReverse(true);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, reverse ? 75 : 150 + Math.random() * 50);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className="inline-block min-w-[200px] text-serene-300 font-serif italic">
+      {words[index].substring(0, subIndex)}
+      <span className={`${blink ? 'opacity-100' : 'opacity-0'} text-serene-400 ml-1 not-italic`}>|</span>
+    </span>
+  );
+};
 
 export const Hero: React.FC = () => {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-20">
-      {/* Background Elements */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div 
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-serene-200/30 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/4"
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], x: [0, -50, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-serene-300/20 rounded-full blur-[120px] -translate-x-1/4 translate-y-1/4"
-        />
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-serene-900 via-serene-800 to-serene-950 pt-32 pb-20">
+      
+      {/* Background Tech/Organic Mesh */}
+      <div className="absolute inset-0 -z-10 opacity-30">
+         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+         <motion.div 
+           animate={{ rotate: 360 }}
+           transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
+           className="absolute -top-[50%] -right-[50%] w-[100vw] h-[100vw] rounded-[40%] bg-gradient-to-b from-serene-600/20 to-transparent blur-[120px]"
+         />
+         <motion.div 
+           animate={{ rotate: -360 }}
+           transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
+           className="absolute -bottom-[30%] -left-[20%] w-[80vw] h-[80vw] rounded-[45%] bg-gradient-to-t from-serene-500/10 to-transparent blur-[100px]"
+         />
       </div>
 
-      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        
         {/* Text Content */}
-        <div className="lg:col-span-7 relative z-10">
+        <div className="lg:col-span-6 relative">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -35,48 +81,41 @@ export const Hero: React.FC = () => {
               }
             }}
           >
-            <motion.div variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }} className="relative inline-block">
-              <span className="inline-block py-1 px-3 rounded-full bg-serene-100 text-serene-800 text-xs font-bold tracking-[0.2em] uppercase mb-6">
-                Clínica de Estética Integrativa
-              </span>
-              <motion.div 
-                className="absolute -top-3 -right-5 text-serene-300"
-                animate={{ 
-                  opacity: [0, 0.8, 0], 
-                  scale: [0.5, 1.2, 0.5], 
-                  rotate: [0, 45] 
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-              >
-                <Sparkles size={20} strokeWidth={1} />
-              </motion.div>
+            <motion.div variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }} className="relative inline-block mb-8">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-serene-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-serene-400"></span>
+                </span>
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-white">
+                  Clínica de Estética Integrativa
+                </span>
+              </div>
             </motion.div>
             
             <motion.h1 
               variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }}
-              className="font-serif text-5xl md:text-7xl lg:text-8xl text-serene-900 leading-[1.1] mb-8"
+              className="font-serif text-5xl md:text-7xl lg:text-7xl text-white leading-[1.1] mb-8"
             >
-              Revele sua <br/>
-              <span className="italic font-light text-serene-500">verdadeira</span> essência.
+              Revele sua verdadeira <br/>
+              <TypewriterText words={['essência.', 'beleza.', 'confiança.', 'luminosidade.']} />
             </motion.h1>
 
             <motion.p 
               variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
-              className="font-sans text-satin-800/80 text-lg md:text-xl leading-relaxed max-w-xl mb-10"
+              className="font-sans text-serene-100/80 text-lg md:text-xl leading-relaxed max-w-xl mb-10 font-light"
             >
-              Uma abordagem autoral onde a ciência encontra a arte. 
-              Protocolos exclusivos desenhados para realçar sua beleza natural com leveza e sofisticação.
+              Onde a alta tecnologia encontra a natureza. Protocolos exclusivos desenhados para realçar sua beleza com precisão, conforto e sofisticação.
             </motion.p>
 
             <motion.div 
               variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               className="flex flex-wrap gap-4"
             >
-              <Button className="pl-8 pr-6">
+              <Button 
+                onClick={() => openWhatsApp()}
+                className="pl-8 pr-6 bg-serene-400 hover:bg-serene-300 text-serene-900 border-none"
+              >
                 Agendar Avaliação
                 <motion.div
                   animate={{ x: [0, 5, 0] }}
@@ -85,59 +124,98 @@ export const Hero: React.FC = () => {
                   <ArrowRight size={18} />
                 </motion.div>
               </Button>
-              <Button variant="outline">
+              <Button 
+                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                 variant="outline" 
+                 className="text-white border-white/30 hover:bg-white/10 hover:border-white"
+              >
                 Conheça nossos Serviços
               </Button>
             </motion.div>
-          </motion.div>
-        </div>
 
-        {/* Image / Visual */}
-        <div className="lg:col-span-5 relative h-[600px] hidden lg:block">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="absolute inset-0"
-          >
-            {/* Main Image */}
-            <div className="relative w-full h-full rounded-[2rem] overflow-hidden shadow-float">
-               <img 
-                 src="https://picsum.photos/seed/aesthetics1/800/1200" 
-                 alt="Estética Facial" 
-                 className="w-full h-full object-cover"
-               />
-               <div className="absolute inset-0 bg-serene-900/10 mix-blend-overlay" />
-            </div>
-
-            {/* Floating Card */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, duration: 0.8 }}
-              className="absolute -bottom-8 -left-8 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/50 max-w-xs"
+            {/* Trust Indicators */}
+            <motion.div 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              className="mt-12 flex items-center gap-6 text-white/60 text-sm"
             >
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-10 h-10 rounded-full bg-serene-100 flex items-center justify-center text-serene-600">
-                  <motion.div
-                    animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.1, 1] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Sparkles size={18} />
-                  </motion.div>
-                </div>
-                <div>
-                  <p className="font-serif text-lg text-serene-900 leading-none">Resultados</p>
-                  <p className="text-xs text-satin-800/60 uppercase tracking-wider">Reais e Naturais</p>
-                </div>
-              </div>
-              <p className="text-sm text-satin-800/80 italic font-serif">
-                "Uma experiência transformadora que renovou minha autoestima."
-              </p>
+               <div className="flex -space-x-3">
+                 {[1,2,3].map(i => (
+                   <div key={i} className="w-10 h-10 rounded-full border-2 border-serene-900 bg-serene-800 flex items-center justify-center overflow-hidden">
+                     <img src={`https://picsum.photos/seed/${i + 50}/100/100`} alt="Avatar" className="w-full h-full object-cover" />
+                   </div>
+                 ))}
+               </div>
+               <div className="flex flex-col">
+                 <div className="flex gap-1 text-serene-400">
+                   <Star size={14} fill="currentColor" />
+                   <Star size={14} fill="currentColor" />
+                   <Star size={14} fill="currentColor" />
+                   <Star size={14} fill="currentColor" />
+                   <Star size={14} fill="currentColor" />
+                 </div>
+                 <span>+5000 clientes satisfeitas</span>
+               </div>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Image / Visual - Woman + Dark Gradient Blend */}
+        <div className="lg:col-span-6 relative h-[700px] hidden lg:block">
+          {/* Main Container */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            {/* Abstract Background behind image */}
+            <div className="absolute w-[500px] h-[500px] bg-serene-400/20 rounded-full blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            
+            {/* The Image */}
+            <div className="relative w-[90%] h-full rounded-[100px] rounded-tr-[200px] overflow-hidden border border-white/10 shadow-2xl shadow-serene-900/50">
+               <img 
+                 src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" 
+                 alt="Mulher com pele radiante" 
+                 className="w-full h-full object-cover"
+               />
+               
+               {/* Gradient Overlay for integration */}
+               <div className="absolute inset-0 bg-gradient-to-t from-serene-900 via-transparent to-transparent opacity-80" />
+               <div className="absolute inset-0 bg-gradient-to-r from-serene-900/50 via-transparent to-transparent" />
+            
+               {/* Floating Tech Element */}
+               <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="absolute bottom-12 right-12 bg-white/10 backdrop-blur-xl p-5 rounded-2xl border border-white/20 w-64"
+               >
+                 <div className="flex justify-between items-start mb-2">
+                   <div className="text-white">
+                     <p className="text-xs uppercase tracking-wider text-serene-300">Análise de Pele</p>
+                     <p className="font-serif text-xl">Hidratação Profunda</p>
+                   </div>
+                   <div className="bg-serene-400 rounded-full p-1.5">
+                     <Sparkles size={14} className="text-serene-900" />
+                   </div>
+                 </div>
+                 <div className="w-full bg-white/10 rounded-full h-1.5 mt-2">
+                   <motion.div 
+                     initial={{ width: 0 }}
+                     animate={{ width: "94%" }}
+                     transition={{ duration: 1.5, delay: 1.2 }}
+                     className="bg-serene-400 h-1.5 rounded-full"
+                   />
+                 </div>
+                 <p className="text-right text-xs text-serene-300 mt-1">94% Eficácia</p>
+               </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
+      
+      {/* Bottom fade to next section */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-serene-50 to-transparent z-20 pointer-events-none" />
     </section>
   );
 };
