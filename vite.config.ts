@@ -10,12 +10,14 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     build: {
-      outDir: 'dist', // Ensure output directory is standard for Vercel
+      outDir: 'dist',
     },
     define: {
-      // Stringify the API key so it is inserted as a string literal in the client code
-      'process.env.API_KEY': JSON.stringify(env.API_KEY),
-      // Polyfill process.env to avoid "process is not defined" errors if other parts of the code access it
+      // Safely replace process.env.API_KEY with string value or empty string
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || ''),
+      // Polyfill process.env.NODE_ENV for React
+      'process.env.NODE_ENV': JSON.stringify(mode),
+      // Fallback for other process.env accesses to avoid ReferenceError
       'process.env': {}
     }
   }
