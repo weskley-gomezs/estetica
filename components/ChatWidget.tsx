@@ -4,13 +4,6 @@ import { MessageSquare, X, Send, Sparkles, Loader2, CalendarCheck } from 'lucide
 import { GoogleGenAI, Chat, FunctionDeclaration, Type } from "@google/genai";
 import { WHATSAPP_NUMBER } from '../utils/constants';
 
-// Fix for TypeScript not recognizing process in the browser environment
-declare const process: {
-  env: {
-    API_KEY: string;
-  }
-};
-
 interface Message {
   id: string;
   role: 'user' | 'model';
@@ -87,6 +80,7 @@ export const ChatWidget: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // process.env.API_KEY is replaced by Vite at build time, and types are handled by @types/node or vite-env
     const apiKey = process.env.API_KEY;
     if (apiKey) {
       try {
