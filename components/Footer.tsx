@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Facebook, Twitter, ArrowUp, MessageCircle } from 'lucide-react';
-import { WHATSAPP_NUMBER } from '../utils/constants';
+import { Instagram, Facebook, Twitter, ArrowUp } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -37,15 +36,9 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p>© 2025 Serene Aesthetics. Todos os direitos reservados.</p>
             <p className="hidden md:block">|</p>
-            <a 
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Ol%C3%A1%20Weskley%2C%20gostaria%20de%20um%20or%C3%A7amento%20para%20um%20site%20similar.`}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-serene-600 transition-colors cursor-pointer"
-            >
-              Desenvolvido por <span className="font-bold">Weskley Gomes</span>
-              <MessageCircle size={12} />
-            </a>
+            <span className="opacity-70">
+              Desenvolvido com excelência.
+            </span>
           </div>
           
           <button 

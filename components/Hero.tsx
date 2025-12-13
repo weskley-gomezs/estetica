@@ -48,6 +48,25 @@ const TypewriterText = ({ words }: { words: string[] }) => {
 };
 
 export const Hero: React.FC = () => {
+  const [imageSrc, setImageSrc] = useState('/images/unnamed.jpg');
+  const [attempt, setAttempt] = useState(0);
+
+  // Lógica inteligente para "caçar" o arquivo correto caso o nome exato falhe
+  const handleImageError = () => {
+    const fallbacks = [
+      '/images/unnamed.jpeg',      // Tenta extensão .jpeg
+      '/images/unnamed.png',       // Tenta extensão .png
+      '/images/unnamed.jpg.jpg',   // Tenta erro comum do Windows (extensão dupla)
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop' // Último recurso: Unsplash
+    ];
+
+    if (attempt < fallbacks.length) {
+      console.log(`Tentando variante de imagem: ${fallbacks[attempt]}`);
+      setImageSrc(fallbacks[attempt]);
+      setAttempt(prev => prev + 1);
+    }
+  };
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-serene-900 via-serene-800 to-serene-950 pt-32 pb-20">
       
@@ -160,7 +179,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Image / Visual - Woman + Dark Gradient Blend */}
-        <div className="lg:col-span-6 relative h-[700px] hidden lg:block">
+        <div className="lg:col-span-6 relative h-[500px] lg:h-[700px] mt-12 lg:mt-0">
           {/* Main Container */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
@@ -171,14 +190,17 @@ export const Hero: React.FC = () => {
             {/* Abstract Background behind image */}
             <div className="absolute w-[500px] h-[500px] bg-serene-400/20 rounded-full blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             
-            {/* The Image */}
+            {/* The Image Container */}
             <div className="relative w-[90%] h-full rounded-[100px] rounded-tr-[200px] overflow-hidden border border-white/10 shadow-2xl shadow-serene-900/50">
-               <img 
-                 src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" 
-                 alt="Mulher com pele radiante" 
-                 className="w-full h-full object-cover"
-               />
                
+               {/* Imagem com lógica de tentativa de recuperação */}
+               <img 
+                 src={imageSrc} 
+                 alt="Especialista Serene" 
+                 className="w-full h-full object-cover"
+                 onError={handleImageError}
+               />
+
                {/* Gradient Overlay for integration */}
                <div className="absolute inset-0 bg-gradient-to-t from-serene-900 via-transparent to-transparent opacity-80" />
                <div className="absolute inset-0 bg-gradient-to-r from-serene-900/50 via-transparent to-transparent" />

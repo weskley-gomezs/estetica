@@ -131,7 +131,7 @@ export const TreatmentDetail: React.FC<TreatmentDetailProps> = ({ service, onBac
             {/* CTA */}
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-serene-100">
               <Button 
-                onClick={() => openWhatsApp(`Olá, Weskley! Gostaria de comprar este site/template. Vi a página do serviço: ${service.title}.`)}
+                onClick={() => openWhatsApp(`Olá! Gostaria de agendar uma avaliação para o tratamento: ${service.title}.`)}
                 className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none shadow-green-200 flex-1 justify-center"
               >
                 <MessageCircle size={20} />

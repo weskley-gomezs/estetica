@@ -1,0 +1,10 @@
+COMO USAR SUAS IMAGENS:
+
+1. Arraste suas fotos para esta pasta (public/images).
+2. Renomeie suas fotos para nomes simples, ex: 'capa.jpg', 'sobre.jpg'.
+3. No código (arquivos .tsx), chame a imagem usando apenas: /images/nome-da-foto.jpg
+
+Exemplo no código:
+src="/images/capa.jpg"
+
+Nota: Não use 'public' no caminho dentro do código, o sistema já sabe que elas estão aqui.
