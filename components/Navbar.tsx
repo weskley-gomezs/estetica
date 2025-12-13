@@ -19,11 +19,23 @@ const navItems: NavItem[] = [
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 20); // Reduzi o threshold para responder mais rápido
+    
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    
+    // Inicializa
+    handleResize();
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const handleNavClick = (href: string) => {
@@ -31,11 +43,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
     onNavigate(href);
   };
 
-  return (
-    <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ 
+  // Define as variantes de animação baseadas no dispositivo
+  // No mobile, evitamos mudar width/borderRadius para não causar "layout shift"
+  const navVariants = {
+    initial: { y: -100, opacity: 0 },
+    animate: isMobile 
+      ? { 
+          // Mobile: Apenas background e blur mudam. Largura fixa 100%.
+          y: 0, 
+          opacity: 1,
+          top: 0,
+          width: '100%',
+          maxWidth: '100%',
+          borderRadius: '0px',
+          backgroundColor: scrolled ? 'rgba(19, 64, 64, 0.95)' : 'rgba(0, 0, 0, 0)', // Mais opaco no mobile para leitura
+          borderBottomWidth: scrolled ? '1px' : '0px', // Borda apenas embaixo
+          borderColor: scrolled ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0)',
+          backdropFilter: scrolled ? 'blur(12px)' : 'blur(0px)', // Blur menor no mobile para performance
+          boxShadow: scrolled ? '0 4px 20px -5px rgba(0, 0, 0, 0.2)' : 'none',
+        }
+      : { 
+          // Desktop: Mantém o efeito "pill" sofisticado
           y: 0, 
           opacity: 1,
           top: scrolled ? 24 : 0,
@@ -47,26 +75,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           borderColor: scrolled ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0)',
           backdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
           boxShadow: scrolled ? '0 20px 50px -12px rgba(0, 0, 0, 0.5)' : 'none',
-        }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed z-50 left-0 right-0 mx-auto overflow-hidden"
+        }
+  };
+
+  return (
+    <>
+      <motion.nav
+        initial="initial"
+        animate="animate"
+        variants={navVariants}
+        transition={{ duration: 0.4, ease: "easeOut" }} // Transição mais rápida
+        className="fixed z-50 left-0 right-0 mx-auto overflow-hidden will-change-transform" // will-change ajuda GPU
       >
-        <div className={`flex items-center justify-between px-6 transition-all duration-500 ${scrolled ? 'py-3' : 'py-6 container mx-auto'}`}>
+        <div className={`flex items-center justify-between px-6 transition-all duration-300 ${scrolled ? 'py-3' : 'py-4 md:py-6 container mx-auto'}`}>
           {/* Logo */}
           <motion.div 
             className="flex items-center gap-2 cursor-pointer"
-            whileHover={{ scale: 1.02 }}
             onClick={() => handleNavClick('#hero')}
+            whileTap={{ scale: 0.95 }}
           >
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
-            >
+            <div className="relative">
               <div className="absolute inset-0 bg-serene-400 blur-md opacity-50" />
-              <Sparkles className={`w-6 h-6 ${scrolled ? 'text-serene-300' : 'text-serene-100'} relative z-10`} />
-            </motion.div>
-            <span className={`font-serif text-2xl font-semibold tracking-wide text-white`}>
+              <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${scrolled ? 'text-serene-300' : 'text-serene-100'} relative z-10`} />
+            </div>
+            <span className={`font-serif text-xl md:text-2xl font-semibold tracking-wide text-white`}>
               SERENE
             </span>
           </motion.div>
@@ -106,10 +138,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
 
           {/* Mobile Toggle */}
           <button 
-            className="md:hidden text-white"
+            className="md:hidden text-white p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X /> : <Menu />}
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </motion.nav>
@@ -118,11 +150,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "circle(150% at 100% 0)" }}
-            exit={{ opacity: 0, clipPath: "circle(0% at 100% 0)" }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-40 bg-serene-900 flex flex-col items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-serene-900/95 backdrop-blur-xl flex flex-col items-center justify-center overscroll-none touch-none" // Impede scroll de fundo
           >
             <div className="flex flex-col gap-8 text-center">
               {navItems.map((item, i) => (
@@ -131,12 +163,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                   onClick={() => handleNavClick(item.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.1 }}
-                  className="font-serif text-4xl text-serene-100 hover:text-serene-400"
+                  transition={{ delay: 0.05 + i * 0.05 }} // Delay reduzido para parecer mais rápido
+                  className="font-serif text-3xl text-serene-100 active:text-serene-400 transition-colors"
                 >
                   {item.label}
                 </motion.button>
               ))}
+            </div>
+            
+            <div className="absolute bottom-10 left-0 w-full text-center px-6">
+                 <p className="text-white/30 text-xs mb-4">Siga-nos nas redes sociais</p>
+                 <button 
+                    onClick={() => openWhatsApp()}
+                    className="w-full bg-serene-400 py-4 rounded-xl text-serene-900 font-bold uppercase tracking-widest"
+                 >
+                    Agendar Agora
+                 </button>
             </div>
           </motion.div>
         )}
