@@ -48,10 +48,13 @@ export const TreatmentDetail: React.FC<TreatmentDetailProps> = ({ service, onBac
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Main Image - Left Side (Desktop) / Top (Mobile) */}
+          {/* Main Image 
+              FIX: 'sticky' removido do mobile. Altura reduzida no mobile.
+              Agora só fica fixo (sticky) em telas grandes (lg:).
+          */}
           <motion.div 
             variants={itemVariants}
-            className="lg:col-span-5 relative rounded-[2rem] overflow-hidden shadow-2xl h-[400px] lg:h-[650px] sticky top-32"
+            className="lg:col-span-5 relative rounded-[2rem] overflow-hidden shadow-2xl h-[300px] md:h-[400px] lg:h-[650px] lg:sticky lg:top-32"
           >
             <img 
               src={service.image} 

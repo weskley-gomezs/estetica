@@ -70,18 +70,22 @@ export const Hero: React.FC = () => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-serene-900 via-serene-800 to-serene-950 pt-32 pb-20">
       
-      {/* Background Tech/Organic Mesh */}
-      <div className="absolute inset-0 -z-10 opacity-30">
+      {/* 
+        Background Tech/Organic Mesh 
+        OTIMIZAÇÃO MOBILE: Animações pesadas (blur/rotate) escondidas no mobile (hidden md:block)
+        para evitar travamentos. No mobile, fica apenas o gradiente do container pai.
+      */}
+      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none">
          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
          <motion.div 
            animate={{ rotate: 360 }}
            transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
-           className="absolute -top-[50%] -right-[50%] w-[100vw] h-[100vw] rounded-[40%] bg-gradient-to-b from-serene-600/20 to-transparent blur-[120px]"
+           className="hidden md:block absolute -top-[50%] -right-[50%] w-[100vw] h-[100vw] rounded-[40%] bg-gradient-to-b from-serene-600/20 to-transparent blur-[120px]"
          />
          <motion.div 
            animate={{ rotate: -360 }}
            transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
-           className="absolute -bottom-[30%] -left-[20%] w-[80vw] h-[80vw] rounded-[45%] bg-gradient-to-t from-serene-500/10 to-transparent blur-[100px]"
+           className="hidden md:block absolute -bottom-[30%] -left-[20%] w-[80vw] h-[80vw] rounded-[45%] bg-gradient-to-t from-serene-500/10 to-transparent blur-[100px]"
          />
       </div>
 
