@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Facebook, Twitter, ArrowUp, MessageCircle } from 'lucide-react';
-import { openWhatsApp, WHATSAPP_NUMBER } from '../utils/constants';
+import { WHATSAPP_NUMBER } from '../utils/constants';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
