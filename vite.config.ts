@@ -13,7 +13,10 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.API_KEY': JSON.stringify(env.API_KEY || ''),
       'process.env.NODE_ENV': JSON.stringify(mode),
-      'process.env': {}
+      'process.env': JSON.stringify({
+        API_KEY: env.API_KEY || '',
+        NODE_ENV: mode,
+      })
     }
   }
 })
