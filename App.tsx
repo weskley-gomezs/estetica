@@ -7,7 +7,6 @@ import { BeforeAfter } from './components/BeforeAfter';
 import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
-import { ChatWidget } from './components/ChatWidget';
 import { TreatmentDetail } from './components/TreatmentDetail';
 import { ServiceDetail } from './data/servicesData';
 import { AnimatePresence } from 'framer-motion';
@@ -56,7 +55,6 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-      <ChatWidget />
     </div>
   );
 };
