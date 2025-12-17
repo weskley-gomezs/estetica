@@ -67,11 +67,13 @@
   <script type="importmap">
 {
   "imports": {
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.10.1",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.28.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react": "https://esm.sh/react@18.3.1",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
     "vite": "https://esm.sh/vite@^7.3.0",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
@@ -80,5 +82,6 @@
 </head>
   <body class="bg-rose text-secondary font-sans antialiased selection:bg-primary selection:text-white">
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
