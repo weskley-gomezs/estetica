@@ -1,238 +1,180 @@
+
 import { TeamMember, Treatment, Technology, Testimonial, FAQItem, BeforeAfterItem } from './types';
 
 export const COMPANY_INFO = {
   name: "Lumina Estética Avançada",
   phone: "(61) 98153-5040",
-  address: "Av. Paulista, 1000 - Bela Vista, São Paulo - SP",
-  hours: "Segunda a Sexta: 09h às 19h | Sábado: 09h às 14h",
-  whatsappLink: "https://wa.me/5561981535040?text=Gostei%20desse%20site%20queria%20saber%20mais%20detalhes",
+  address: "Edifício Prime Business, Salas 401-403 - Brasília, DF",
+  hours: "Segunda a Sexta: 08h às 20h | Sábado: 09h às 15h",
+  whatsappLink: "https://wa.me/5561981535040?text=Olá%20Weskley,%20vi%20o%20site%20modelo%20Lumina%20e%20queria%20mais%20informações...",
   bookingLink: "#agendamento",
   instagram: "@luminaestetica",
-  email: "contato@luminaestetica.com.br"
+  email: "contato@luminaestetica.com.br",
+  technicalResponsible: "Dra. Juliana Mendes - CRBM 12345/DF"
 };
 
 export const TEAM: TeamMember[] = [
   {
     id: "1",
     name: "Dra. Juliana Mendes",
-    role: "Diretora Técnica & Biomédica Esteta",
-    image: "https://picsum.photos/id/64/400/400",
-    registration: "CRBM 12345",
-    bio: "Especialista em Harmonização Facial com mais de 10 anos de experiência clínica. Focada em resultados naturais que respeitam a anatomia individual.",
-    specialties: ["Harmonização Facial", "Bioestimuladores", "Fios de Sustentação"]
+    role: "Diretora Clínica & Especialista em Harmonização",
+    image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=600",
+    registration: "CRBM 12345/DF",
+    bio: "Pós-graduada em Estética Avançada e Anatomia Facial Aplicada. Referência em gerenciamento de pele e rejuvenescimento natural com mais de 5 mil procedimentos realizados.",
+    specialties: ["Bioestimuladores", "Fios de Sustentação", "Mapeamento Facial"]
   },
   {
     id: "2",
     name: "Dr. Ricardo Alencar",
-    role: "Dermatologista Parceiro",
-    image: "https://picsum.photos/id/91/400/400",
-    registration: "CRM/SP 54321",
-    bio: "Médico dermatologista focado em tecnologias de alta performance para rejuvenescimento e tratamento de melasma.",
-    specialties: ["Lasers", "Ultraformer", "Dermatologia Clínica"]
+    role: "Dermatologista Clínico",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600",
+    registration: "CRM/DF 54321",
+    bio: "Especialista pela Sociedade Brasileira de Dermatologia (SBD). Atua no protocolo de tecnologias de alta performance para tratamento de manchas e cicatrizes.",
+    specialties: ["Melasmas", "Oncologia Cutânea", "Tecnologias Laser"]
   }
 ];
 
 export const TREATMENTS: Treatment[] = [
   {
     id: "toxina-botulinica",
-    title: "Toxina Botulínica (Botox)",
-    shortDescription: "Prevenção e suavização de rugas dinâmicas e linhas de expressão.",
-    fullDescription: "O tratamento padrão ouro para rejuvenescimento facial. A toxina atua relaxando a musculatura específica, prevenindo que as linhas de expressão se tornem rugas profundas (estáticas).",
-    targetAudience: "Homens e mulheres que desejam suavizar pés de galinha, linhas na testa e entre as sobrancelhas.",
-    benefits: [
-      "Suavização das rugas",
-      "Aparência mais descansada",
-      "Prevenção do envelhecimento",
-      "Elevação da cauda da sobrancelha (efeito lifting)"
-    ],
-    process: "Aplicação através de microinjeções em pontos estratégicos da face. O procedimento é rápido e praticamente indolor.",
-    duration: "30 minutos (sessão). Duração do efeito: 4 a 6 meses.",
-    prePostCare: "Evitar exercícios físicos por 24h após a aplicação. Não massagear a região. Não deitar por 4 horas.",
-    contraindications: "Gestantes, lactantes, portadores de doenças neuromusculares ou infecção no local da aplicação.",
-    expectedResults: "Início do efeito em 3 a 5 dias, com pico em 15 dias. Pele mais lisa e semblante leve.",
+    title: "Toxina Botulínica",
+    shortDescription: "Prevenção e suavização de rugas dinâmicas.",
+    fullDescription: "Protocolo de aplicação personalizada que visa relaxar a musculatura de forma estratégica, mantendo a expressividade e eliminando o aspecto de cansaço.",
+    targetAudience: "Pacientes que buscam prevenir o envelhecimento precoce e suavizar lines na testa e olhos.",
+    benefits: ["Olhar mais descansado", "Prevenção de rugas estáticas", "Ajuste de assimetrias faciais"],
+    process: "Aplicação pontual com microagulhas, precedida de mapeamento muscular.",
+    duration: "30 min",
+    prePostCare: "Não deitar ou baixar a cabeça por 4 horas após o procedimento.",
+    contraindications: "Gestação, amamentação e alergia à albumina.",
+    expectedResults: "Efeito inicia em 48h, com resultado final em 15 dias.",
     image: "https://www.beautycoestetica.com.br/wp-content/uploads/2020/06/mecanismo-de-acao-de-toxina-butolinica.jpg"
   },
   {
-    id: "preenchimento-labial",
+    id: "preenchimento-hialuronico",
     title: "Preenchimento com Ácido Hialurônico",
-    shortDescription: "Devolução de volume, contorno e hidratação para face e lábios.",
-    fullDescription: "Utilizamos ácido hialurônico de alta reticulação para repor volumes perdidos com o envelhecimento ou para embelezamento (beautification) de lábios, malar e mandíbula.",
-    targetAudience: "Pessoas com perda de volume facial, lábios finos, olheiras profundas ou desejo de definição de contorno.",
-    benefits: [
-      "Volume imediato",
-      "Definição de contorno (Top Model Look)",
-      "Hidratação profunda",
-      "Harmonização dos traços faciais"
-    ],
-    process: "Aplicação com agulha ou cânula (para maior segurança), esculpindo a região desejada.",
-    duration: "45 a 60 minutos. Duração do efeito: 12 a 18 meses.",
-    prePostCare: "Gelo local para evitar inchaço. Evitar exposição solar intensa se houver hematoma.",
-    contraindications: "Alergia aos componentes, doenças autoimunes descompensadas, gravidez.",
-    expectedResults: "Volume e contorno imediato, com resultado final após a redução do inchaço (aprox. 15 dias).",
+    shortDescription: "Volume, contorno e hidratação profunda.",
+    fullDescription: "Utilizamos as melhores linhas de preenchedores para restaurar volumes perdidos, definir contornos e hidratar a pele de dentro para fora.",
+    targetAudience: "Indicado para lábios, olheiras, maçãs do rosto e sulcos profundos.",
+    benefits: ["Resultado imediato", "Bioestimulação leve", "Reversível e seguro"],
+    process: "Injeção estratégica de gel de ácido hialurônico em diferentes camadas da derme.",
+    duration: "45 min",
+    prePostCare: "Evitar atividades físicas intensas nas primeiras 24 horas.",
+    contraindications: "Doenças autoimunes ativas, alergia aos componentes.",
+    expectedResults: "Resultado imediato com estabilização em 15-20 dias.",
     image: "https://d1ncsduzhm4cuo.cloudfront.net/Custom/Content/Products/29/54/2954952_preenchimento-acido-hialuronico_m1_638225259131228654.webp"
   },
   {
     id: "bioestimuladores",
     title: "Bioestimuladores de Colágeno",
-    shortDescription: "Combate à flacidez facial e corporal estimulando seu próprio colágeno.",
-    fullDescription: "Substâncias injetáveis (como Sculptra ou Radiesse) que provocam uma reação inflamatória controlada, induzindo o organismo a produzir colágeno novo.",
-    targetAudience: "Pessoas com flacidez leve a moderada na face, pescoço, mãos ou corpo (bumbum, abdômen).",
-    benefits: [
-      "Melhora da firmeza da pele",
-      "Efeito lifting gradual",
-      "Melhora da textura dérmica",
-      "Resultados naturais e duradouros"
-    ],
-    process: "Injeção do produto na derme profunda. Normalmente indicado protocolo de 3 sessões.",
-    duration: "40 minutos. Resultados aparecem a partir de 30 dias.",
-    prePostCare: "Massagem na região (dependendo do produto) por 5 dias. Vida normal imediata.",
-    contraindications: "Doenças do colágeno, infecções ativas, gravidez.",
-    expectedResults: "Pele mais firme e densa. O resultado não é volume, e sim qualidade de pele.",
+    shortDescription: "A poupança de colágeno para sua pele.",
+    fullDescription: "Produtos que estimulam seu próprio organismo a produzir colágeno novo, melhorando a densidade e firmeza da pele de forma progressiva.",
+    targetAudience: "Ideal para tratamento de flacidez facial e corporal.",
+    benefits: ["Efeito gradual e natural", "Melhora a textura da pele", "Alta durabilidade (até 2 anos)"],
+    process: "Aplicação injetável de substâncias biocompatíveis como Sculptra ou Radiesse.",
+    duration: "40 min",
+    prePostCare: "Massagem local conforme orientação técnica em alguns casos.",
+    contraindications: "Infecções no local da aplicação.",
+    expectedResults: "Resultados começam a aparecer em 30-60 dias após a sessão.",
     image: "https://i0.wp.com/clinicamarinaceruti.com.br//wp-content/uploads/2023/01/bioestimulador-de-colageno-1024x683.jpg?resize=1024%2C683&ssl=1"
   },
   {
-    id: "ultraformer",
-    title: "Ultraformer III (HIFU)",
-    shortDescription: "Lifting facial não cirúrgico e redução de gordura localizada.",
-    fullDescription: "Ultrassom micro e macrofocado que atinge as camadas mais profundas da pele e o músculo (SMAS), promovendo retração e ancoragem muscular.",
-    targetAudience: "Flacidez de pálpebras, papada, contorno facial indefinido ou gordura localizada corporal.",
-    benefits: [
-      "Efeito lifting imediato (efeito cinderela) e tardio",
-      "Redução da papada",
-      "Fox Eyes (elevação do olhar)",
-      "Sem cortes ou tempo de recuperação"
-    ],
-    process: "Aplicação de disparos de ultrassom que aquecem pontos profundos. Pode haver desconforto leve a moderado.",
-    duration: "30 a 60 minutos. Sessão anual ou semestral.",
-    prePostCare: "Não requer repouso. Pode haver leve inchaço ou sensibilidade ao toque.",
-    contraindications: "Fios de sustentação recentes, feridas abertas, acne cística grave na área.",
-    expectedResults: "Melhora do contorno facial e firmeza. O pico de colágeno ocorre em 3 meses.",
+    id: "ultraformer-iii",
+    title: "Ultraformer III",
+    shortDescription: "Lifting facial e corporal sem cortes.",
+    fullDescription: "A tecnologia de ultrassom focado e microfocado mais desejada do mundo para o tratamento da flacidez e contorno facial.",
+    targetAudience: "Pessoas com flacidez inicial a moderada e que desejam evitar cirurgias.",
+    benefits: ["Ancoragem muscular", "Efeito lifting imediato", "Redução de gordura localizada"],
+    process: "Disparos de ondas de calor que atingem desde a derme até o SMAS (músculo).",
+    duration: "45-90 min",
+    prePostCare: "Uso de protetor solar e hidratação intensa.",
+    contraindications: "Implantes metálicos na área tratada e feridas abertas.",
+    expectedResults: "Pico de resultado em 3 meses após a sessão.",
     image: "https://mealthclinic.com.br/wp-content/uploads/2023/02/slide-ultraformer-ipad.jpg"
-  }
-];
-
-export const TECHNOLOGIES: Technology[] = [
-  {
-    id: "tech-1",
-    name: "Ultraformer III",
-    function: "Ultrassom Micro e Macrofocado",
-    benefits: ["Lifting sem cortes", "Trata gordura e flacidez", "Recuperação imediata"],
-    image: "https://www.ramagaproestetica.com.br/wp-content/uploads/2023/05/ultraformer-1.png",
-    description: "Tecnologia de ponta para ancoragem muscular e estímulo de colágeno profundo. O padrão ouro para lifting não cirúrgico."
-  },
-  {
-    id: "tech-2",
-    name: "Lavieen",
-    function: "Laser Thulium (BB Glow Effect)",
-    benefits: ["Efeito maquiagem", "Trata manchas e poros", "Brilho e viço"],
-    image: "https://cdn.awsli.com.br/800x800/708/708757/produto/226263188/carrossel-3-pvifsfqdy3.png",
-    description: "Laser fracionado não ablativo que renova a camada superficial da pele, ideal para tratamento de melasma, manchas solares e textura."
-  },
-  {
-    id: "tech-3",
-    name: "Morpheus 8",
-    function: "Radiofrequência Microagulhada",
-    benefits: ["Retração de pele intensa", "Trata cicatrizes de acne", "Rejuvenescimento global"],
-    image: "https://img.medicalexpo.com/pt/images_me/photo-mg/4579544-20303023.jpg",
-    description: "A tecnologia queridinha das celebridades. Combina microagulhamento profundo com energia térmica para remodelar a gordura e a derme."
   }
 ];
 
 export const FAQS: FAQItem[] = [
   {
-    question: "Os procedimentos estéticos são dolorosos?",
-    answer: "A maioria dos procedimentos é minimamente invasiva e muito tolerável. Utilizamos anestésicos tópicos potentes e técnicas para minimizar o desconforto. Procedimentos como a Toxina Botulínica são praticamente indolores."
+    question: "Os procedimentos são doloridos?",
+    answer: "Trabalhamos com protocolos de conforto avançados, incluindo anestésicos tópicos de alta potência e resfriamento de pele, para que sua experiência seja a mais tranquila possível."
   },
   {
-    question: "Quanto tempo dura o efeito do Botox?",
-    answer: "A duração média é de 4 a 6 meses, variando conforme o organismo de cada paciente, nível de atividade física e força muscular. Recomendamos manutenção semestral."
-  },
-  {
-    question: "Posso voltar a trabalhar no mesmo dia?",
-    answer: "Sim! 95% dos nossos tratamentos não exigem tempo de recuperação (downtime). Você pode realizar o procedimento no horário de almoço e retornar às atividades, seguindo apenas cuidados simples."
-  },
-  {
-    question: "A clínica aceita convênios?",
-    answer: "Trabalhamos exclusivamente com atendimentos particulares para garantir a qualidade dos insumos e o tempo dedicado a cada paciente. Emitimos nota fiscal para reembolso, caso seu plano ofereça essa modalidade."
-  },
-  {
-    question: "É seguro fazer procedimentos estéticos?",
-    answer: "Absolutamente, quando realizados por profissionais qualificados em ambiente adequado. Nossa clínica segue rigorosamente as normas da ANVISA e utiliza apenas produtos com registro e selo de autenticidade."
+    question: "Como é feita a escolha dos produtos?",
+    answer: "Utilizamos exclusivamente marcas 'Gold Standard' com registro na ANVISA e rastreabilidade total (Allergan, Galderma, Merz), garantindo segurança a longo prazo."
   }
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "t1",
-    name: "Mariana Costa",
-    treatment: "Harmonização Facial",
-    text: "Fiquei impressionada com a naturalidade. Tinha medo de ficar com 'cara de boneca', mas a Dra. Juliana respeitou meus traços. Minha autoestima renovou!",
+    name: "Mariana S. Costa",
+    treatment: "Protocolo Glow & Toxina",
+    text: "O que mais me impressionou foi o cuidado na avaliação. A Dra. Juliana explicou cada ponto. Meu rosto não ficou 'congelado', ficou apenas mais descansado e iluminado.",
     rating: 5
   },
   {
     id: "t2",
-    name: "Fernanda Lima",
-    treatment: "Ultraformer e Bioestimulador",
-    text: "O ambiente da clínica é acolhedor e a equipe muito técnica. Explicaram tudo antes de fazer. Sinto meu rosto muito mais firme.",
+    name: "Fernanda Ribeiro",
+    treatment: "Ultraformer Full Face",
+    text: "Tinha muito receio de dor, mas o protocolo de conforto da clínica é excelente. Em 2 meses senti meu contorno da mandíbula voltar.",
     rating: 5
+  }
+];
+
+export const TECHNOLOGIES: Technology[] = [
+  {
+    id: "ultraformer",
+    name: "Ultraformer III",
+    function: "Ultrassom Micro e Macrofocado",
+    benefits: ["Estímulo de colágeno profundo", "Ancoragem muscular", "Sem downtime"],
+    image: "https://www.ramagaproestetica.com.br/wp-content/uploads/2023/05/ultraformer-1.png",
+    description: "Tecnologia que promove microcoagulação térmica, estimulando a regeneração do colágeno e a retração das fibras musculares."
   },
   {
-    id: "t3",
-    name: "Roberto Souza",
-    treatment: "Toxina Botulínica",
-    text: "Rápido, prático e eficaz. Faço meu botox preventivo há 2 anos na Lumina e não troco. Profissionais de extrema confiança.",
-    rating: 5
+    id: "lavieen",
+    name: "Lavieen",
+    function: "Laser de Tulium / BB Laser",
+    benefits: ["Uniformização do tom da pele", "Tratamento de poros", "Glow imediato"],
+    image: "https://cdn.awsli.com.br/800x800/708/708757/produto/226263188/carrossel-3-pvifsfqdy3.png",
+    description: "Um laser não-ablativo versátil que regenera as camadas da pele, sendo excelente para melasma, acne e rejuvenescimento leve."
   },
   {
-    id: "t4",
-    name: "Beatriz Silva",
-    treatment: "Lavieen e Protocolo de Manchas",
-    text: "Minha pele nunca teve tanto viço. O Lavieen realmente entrega aquele efeito 'BB Glow' prometido. A equipe foi super atenciosa no pós-procedimento.",
-    rating: 5
-  },
-  {
-    id: "t5",
-    name: "Carla Dias",
-    treatment: "Preenchimento Labial",
-    text: "Amei o resultado! Ficou super natural, apenas realçou o contorno que eu tinha perdido. A Dra. Juliana tem mãos de fada.",
-    rating: 5
-  },
-  {
-    id: "t6",
-    name: "Patrícia Gomes",
-    treatment: "Morpheus 8",
-    text: "Fiz para cicatrizes de acne e a melhora na textura foi visível já na primeira sessão. O ambiente da clínica te deixa muito segura.",
-    rating: 5
+    id: "morpheus",
+    name: "Morpheus 8",
+    function: "Radiofrequência Microagulhada Fracionada",
+    benefits: ["Remodelamento de gordura", "Firmeza intensa", "Tratamento de cicatrizes"],
+    image: "https://img.medicalexpo.com/pt/images_me/photo-mg/4579544-20303023.jpg",
+    description: "Combina microagulhamento com radiofrequência para penetrar profundamente na pele, tratando flacidez e gordura simultaneamente."
   }
 ];
 
 export const BEFORE_AFTER_ITEMS: BeforeAfterItem[] = [
   {
-    id: "ba1",
-    treatment: "Harmonização Facial",
-    description: "Definição de mandíbula e mento",
-    beforeImage: "https://cdn.pixabay.com/photo/2016/09/02/22/40/man-1640460_640.jpg", 
-    afterImage: "https://cdn.pixabay.com/photo/2019/10/22/13/43/man-4568761_640.jpg"
-  },
-  {
-    id: "ba2",
+    id: "labial",
     treatment: "Preenchimento Labial",
-    description: "Hidratação e volume natural",
+    description: "Volume e hidratação com ácido hialurônico",
     beforeImage: "https://cdn.pixabay.com/photo/2016/11/29/03/35/girl-1867092_640.jpg",
     afterImage: "https://cdn.pixabay.com/photo/2017/03/30/18/17/girl-2189247_640.jpg"
   },
   {
-    id: "ba3",
-    treatment: "Bioestimulador",
-    description: "Firmeza e melhora da textura",
+    id: "bio-ba",
+    treatment: "Protocolo Bioestimulador",
+    description: "Melhora da firmeza e densidade dérmica",
     beforeImage: "https://cdn.pixabay.com/photo/2019/11/06/05/57/woman-4605248_640.jpg",
     afterImage: "https://cdn.pixabay.com/photo/2016/02/19/11/49/model-1209985_640.jpg"
   },
   {
-    id: "ba4",
-    treatment: "Tratamento de Pele",
-    description: "Redução de manchas e poros",
+    id: "pele-masc",
+    treatment: "Tratamento de Pele Masculino",
+    description: "Renovação celular e controle de poros",
     beforeImage: "https://cdn.pixabay.com/photo/2016/11/29/03/52/man-1867175_640.jpg",
     afterImage: "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_640.jpg"
+  },
+  {
+    id: "harmonizacao-masc",
+    treatment: "Harmonização Facial Masculina",
+    description: "Definição de mandíbula e mento",
+    beforeImage: "https://cdn.pixabay.com/photo/2016/09/02/22/40/man-1640460_640.jpg",
+    afterImage: "https://cdn.pixabay.com/photo/2019/10/22/13/43/man-4568761_640.jpg"
   }
 ];

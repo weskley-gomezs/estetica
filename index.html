@@ -15,12 +15,12 @@
               sans: ['"Lato"', 'sans-serif'],
             },
             colors: {
-              primary: '#B08968', // Deep Champagne/Bronze
-              secondary: '#4A403A', // Deep Mauve/Brown (instead of black)
-              accent: '#E6CCB2', // Soft Nude
-              rose: '#F5EBE0', // Very light rose/off-white base
+              primary: '#B08968', 
+              secondary: '#4A403A',
+              accent: '#E6CCB2',
+              rose: '#F5EBE0',
               'rose-dark': '#DDB892',
-              surface: '#FFFCF9', // Warm white
+              surface: '#FFFCF9',
               glass: 'rgba(255, 255, 255, 0.6)',
             },
             animation: {
@@ -60,28 +60,26 @@
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.5);
       }
-      .text-glow {
-        text-shadow: 0 0 20px rgba(255,255,255,0.5);
-      }
     </style>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@18.3.1",
-    "react/": "https://esm.sh/react@18.3.1/",
     "react-dom": "https://esm.sh/react-dom@18.3.1",
     "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
     "react-router-dom": "https://esm.sh/react-router-dom@6.28.0?external=react,react-dom",
     "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
     "vite": "https://esm.sh/vite@^7.3.0",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
-</head>
+  </head>
   <body class="bg-rose text-secondary font-sans antialiased selection:bg-primary selection:text-white">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

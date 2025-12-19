@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { TREATMENTS, COMPANY_INFO } from '../constants';
 import { Clock, Sparkles } from 'lucide-react';
@@ -56,9 +57,8 @@ const Treatments = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                     {/* Usamos o número novo (5561981535040) mas personalizamos a mensagem para o tratamento específico */}
                      <a 
-                       href={`https://wa.me/5561981535040?text=Gostaria de saber mais sobre ${treatment.title}`}
+                       href={`https://wa.me/5561981535040?text=Olá%20Weskley,%20vi%20o%20site%20modelo%20Lumina%20e%20gostaria%20de%20saber%20mais%20sobre%20${encodeURIComponent(treatment.title)}`}
                        className="px-8 py-3 bg-secondary text-white rounded-full font-medium hover:bg-primary transition-colors duration-500 shadow-lg text-center"
                        target="_blank"
                        rel="noopener noreferrer"

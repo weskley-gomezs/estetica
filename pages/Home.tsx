@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Star, Sparkles, Feather, Heart, GripVertical } from 'lucide-react';
+import { ArrowRight, Star, Sparkles, Feather, Heart, GripVertical, Award, CheckCircle2 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { TREATMENTS, TESTIMONIALS, COMPANY_INFO, BEFORE_AFTER_ITEMS } from '../constants';
+import { TREATMENTS, TESTIMONIALS, COMPANY_INFO, BEFORE_AFTER_ITEMS, TEAM } from '../constants';
 
 const ImageComparison = ({ before, after, alt }: { before: string; after: string; alt: string }) => {
   const [position, setPosition] = useState(50);
@@ -24,11 +25,11 @@ const ImageComparison = ({ before, after, alt }: { before: string; after: string
       onMouseMove={handleMove}
       onTouchMove={handleMove}
     >
-      {/* Camada Inferior: DEPOIS (Visível na parte DIREITA) */}
+      {/* Camada Inferior: DEPOIS */}
       <img src={after} alt={`Depois ${alt}`} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
       <span className="absolute top-4 right-4 bg-primary/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full z-10">DEPOIS</span>
 
-      {/* Camada Superior: ANTES (Visível na parte ESQUERDA - recortada da direita) */}
+      {/* Camada Superior: ANTES */}
       <div 
         className="absolute inset-0 w-full h-full overflow-hidden"
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
@@ -42,7 +43,7 @@ const ImageComparison = ({ before, after, alt }: { before: string; after: string
         className="absolute top-0 bottom-0 w-1 bg-white cursor-col-resize z-20"
         style={{ left: `${position}%` }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg text-primary">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg text-primary border border-primary/10">
           <GripVertical size={16} />
         </div>
       </div>
@@ -62,9 +63,8 @@ const Home = () => {
 
   return (
     <div className="overflow-hidden">
-      {/* Hero Section - Surreal & Ethereal */}
+      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20">
-        {/* Abstract/Image Background */}
         <div className="absolute inset-0 z-0 overflow-hidden">
            <img 
              src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop" 
@@ -105,7 +105,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Philosophy - Floating Cards */}
+      {/* Philosophy */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -128,7 +128,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Treatments - Horizontal Flow */}
+      {/* Featured Treatments */}
       <section className="py-20 bg-gradient-to-b from-transparent to-white/40">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
@@ -166,41 +166,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Sensory Break / Image + Text */}
-      <section className="py-32">
-        <div className="container mx-auto px-6">
-           <div className="glass-panel rounded-[3rem] p-8 md:p-16 relative overflow-hidden">
-              <div className="flex flex-col md:flex-row items-center gap-16 relative z-10">
-                 <div className="md:w-1/2 space-y-8">
-                    <h2 className="text-4xl md:text-6xl font-serif text-secondary leading-tight">
-                      Você merece um momento <br/> <span className="italic text-primary">só seu.</span>
-                    </h2>
-                    <p className="text-lg text-secondary/70 font-light leading-relaxed">
-                      Em um mundo acelerado, parar para se cuidar é um ato de resistência e amor próprio. 
-                      Na Lumina, cada detalhe — do aroma do ambiente à temperatura da sala — é pensado para que você relaxe enquanto cuidamos da sua beleza.
-                    </p>
-                    <NavLink to="/sobre" className="inline-block border border-secondary/20 rounded-full px-8 py-3 text-sm uppercase tracking-widest hover:bg-secondary hover:text-white transition-all duration-500">
-                      Nossa Filosofia
-                    </NavLink>
-                 </div>
-                 <div className="md:w-1/2 relative">
-                    <div className="relative rounded-[2rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700">
-                      <img 
-                        src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop" 
-                        alt="Mulher relaxada" 
-                        className="w-full h-auto object-cover"
-                      />
-                    </div>
-                 </div>
-              </div>
-              
-              {/* Background blobs */}
-              <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 rounded-full blur-[80px]"></div>
-              <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-rose-dark/10 rounded-full blur-[80px]"></div>
-           </div>
-        </div>
-      </section>
-
       {/* Before & After Section */}
       <section className="py-24 bg-gradient-to-b from-white/40 to-transparent">
         <div className="container mx-auto px-6">
@@ -218,25 +183,72 @@ const Home = () => {
                     after={item.afterImage} 
                     alt={item.treatment} 
                   />
-                  <div className="flex justify-between items-end px-2">
-                    <div>
-                       <h3 className="text-xl font-serif text-secondary">{item.treatment}</h3>
-                       <p className="text-sm text-secondary/60 font-light">{item.description}</p>
-                    </div>
-                    <div className="text-xs text-primary font-bold uppercase tracking-widest">
-                       Lumina
-                    </div>
+                  <div className="px-2">
+                    <h3 className="text-xl font-serif text-secondary">{item.treatment}</h3>
+                    <p className="text-sm text-secondary/60 font-light">{item.description}</p>
                   </div>
                 </div>
               ))}
            </div>
-           <div className="mt-12 text-center">
-              <p className="text-xs text-secondary/40 italic">*Resultados individuais podem variar. Fotos autorizadas pelos pacientes.</p>
-           </div>
         </div>
       </section>
 
-      {/* Testimonials - Auto-rotating Carousel */}
+      {/* Team Showcase - NEW SECTION */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -z-10"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-rose-dark/5 rounded-full blur-[80px] -z-10"></div>
+        
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Nossa Expertise</span>
+            <h2 className="text-4xl md:text-5xl font-serif text-secondary">Especialistas em Você</h2>
+            <p className="text-secondary/60 font-light mt-4 max-w-xl mx-auto">Mãos habilidosas e mentes dedicadas a revelar sua melhor versão com segurança e embasamento científico.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-5xl mx-auto">
+            {TEAM.map((member) => (
+              <div key={member.id} className="group flex flex-col items-center text-center">
+                <div className="relative mb-8">
+                  <div className="w-64 h-80 overflow-hidden rounded-t-[8rem] rounded-b-[2rem] shadow-2xl relative">
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                  </div>
+                  {/* Badge */}
+                  <div className="absolute -bottom-4 -right-4 bg-white p-3 rounded-2xl shadow-xl border border-rose flex items-center justify-center">
+                    <Award size={24} className="text-primary" />
+                  </div>
+                </div>
+                
+                <h3 className="text-3xl font-serif text-secondary mb-2">{member.name}</h3>
+                <span className="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-4 block">{member.role}</span>
+                <p className="text-secondary/60 font-light text-sm max-w-sm mb-6 leading-relaxed">
+                  {member.bio}
+                </p>
+                
+                <div className="flex flex-wrap justify-center gap-2">
+                  {member.specialties.map((spec, i) => (
+                    <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 bg-rose text-[10px] uppercase font-bold tracking-wider text-secondary/70 rounded-full border border-primary/10">
+                      <CheckCircle2 size={10} className="text-primary" /> {spec}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-20 text-center">
+            <NavLink to="/sobre" className="inline-flex items-center gap-3 text-secondary/60 hover:text-primary transition-colors font-medium border-b border-primary/20 pb-1">
+              Saiba mais sobre nossa história <ArrowRight size={16} />
+            </NavLink>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
       <section className="py-24 bg-white/40">
         <div className="container mx-auto px-6 max-w-4xl text-center">
           <Star size={32} className="text-primary mx-auto mb-8 animate-pulse" fill="currentColor" />
