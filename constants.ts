@@ -96,7 +96,7 @@ export const TREATMENTS: Treatment[] = [
 export const FAQS: FAQItem[] = [
   {
     question: "Os procedimentos são doloridos?",
-    answer: "Trabalhamos com protocolos de conforto avançados, incluindo anestésicos tópicos de alta potência e resfriamento de pele, para que sua experiência seja a mais tranquila possível."
+    answer: "Trabalhamos com protocolos de conforto avançados, incluindo anestésicos tópicos de alta potência e resfriamento de pele, para que sua experiênca seja a mais tranquila possível."
   },
   {
     question: "Como é feita a escolha dos produtos?",
@@ -117,6 +117,48 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Fernanda Ribeiro",
     treatment: "Ultraformer Full Face",
     text: "Tinha muito receio de dor, mas o protocolo de conforto da clínica é excelente. Em 2 meses senti meu contorno da mandíbula voltar.",
+    rating: 5
+  },
+  {
+    id: "t3",
+    name: "Beatriz Helena",
+    treatment: "Preenchimento Labial",
+    text: "Meus lábios ficaram exatamente como eu queria: naturais e hidratados. Ninguém diz que fiz preenchimento, apenas que estou mais bonita.",
+    rating: 5
+  },
+  {
+    id: "t4",
+    name: "Gustavo Mendes",
+    treatment: "Harmonização Masculina",
+    text: "Ambiente extremamente profissional. Fiz a mandíbula e o queixo e o resultado foi muito discreto, mas marcante. Recomendo para todos os homens.",
+    rating: 5
+  },
+  {
+    id: "t5",
+    name: "Patrícia Albuquerque",
+    treatment: "Bioestimulador de Colágeno",
+    text: "Já fiz em outros lugares, mas a técnica da Lumina é diferenciada. Minha pele recuperou o viço e a firmeza de anos atrás sem mudar minha expressão.",
+    rating: 5
+  },
+  {
+    id: "t6",
+    name: "Carla Silveira",
+    treatment: "Laser Lavieen",
+    text: "O efeito 'BB Cream' do Lavieen é real! Minha pele está com uma textura incrível e os poros diminuíram drasticamente. Não vivo mais sem.",
+    rating: 5
+  },
+  {
+    id: "t7",
+    name: "Renata Vasconcelos",
+    treatment: "Morpheus 8",
+    text: "O tratamento para as cicatrizes de acne foi transformador. Vale cada centavo pela tecnologia e pelo suporte pós-procedimento que a clínica oferece.",
+    rating: 5
+  },
+  {
+    id: "t8",
+    name: "Sônia Maria",
+    treatment: "Gerenciamento de Envelhecimento",
+    text: "Aos 60 anos, eu não queria parecer ter 20, queria estar bem para a minha idade. A clínica entendeu perfeitamente e cuidou de mim com muita elegância.",
     rating: 5
   }
 ];
